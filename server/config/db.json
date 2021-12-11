@@ -1,9 +1,0 @@
-{
-    "development": {
-        "host": "localhost",
-        "username": "zzang",
-        "password": "1234",
-        "database": "zzangflix",
-        "dialect": "mysql"
-    }
-}

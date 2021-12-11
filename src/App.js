@@ -1,35 +1,32 @@
 
-import React, { Component } from 'react';
-import axios from 'axios';
-
-import Home from './routes/Home';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router';
+import Home from './routes/Home';
+import Content from './routes/Content';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      react: ''
-    }
-  }
+function App() {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     react: ''
+  //   }
+  // }
 
-  componentDidMount() {
-    this._getReact();
-  }
+  // componentDidMount() {
+  //   this._getReact();
+  // }
 
-  _getReact = async() => {
-    const res = await axios.get('/react');
-    this.setState({ react: res.data.react })
-  }
+  // _getReact = async() => {
+  //   const res = await axios.get('/react');
+  //   this.setState({ react: res.data.react })
+  // }
 
-  render() {
-    return (
-      <div>
-        <h1> {this.state.react} </h1>
-        <Route path="/" component={ Home } />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Route path="/" exact={ true } component={ Home } />
+      <Route path="/content" component={ Content } />
+    </div>
+  );
 }
 
 export default App;

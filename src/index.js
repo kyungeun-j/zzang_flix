@@ -4,15 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-// import { createStore } from 'redux';
-// import rootReducer from './modules';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
+import promiseMiddlerware from 'redux-promise';
 
-// const store = createStore(rootReducer);
-// console.log(store.getState());
+// const createStoreWidthMiddleware = applyMiddleware(
+//   promiseMiddlerware,
+//   reduxThunk
+// )(createStore);
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    {/* <Provider store={ createStoreWidthMiddleware()}> */}
+      <App />
+    {/* </Provider> */}
   </BrowserRouter>,
   document.getElementById('root')
 );

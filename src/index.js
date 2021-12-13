@@ -8,18 +8,23 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddlerware from 'redux-promise';
+import reducer from './reducers/index';
 
-// const createStoreWidthMiddleware = applyMiddleware(
-//   promiseMiddlerware,
-//   reduxThunk
-// )(createStore);
+const createStoreWidthMiddleware = applyMiddleware(
+  promiseMiddlerware,
+  reduxThunk
+)(createStore);
 
 ReactDOM.render(
-  <BrowserRouter>
-    {/* <Provider store={ createStoreWidthMiddleware()}> */}
-      <App />
-    {/* </Provider> */}
-  </BrowserRouter>,
+  <Provider store={ createStoreWidthMiddleware(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && 
+    window.__REDUX_DEVTOOLS_EXTENSION__() 
+  )}>
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

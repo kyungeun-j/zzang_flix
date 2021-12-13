@@ -1,2 +1,1 @@
-export const SELECT_CONTENT = 'SELECT_CONTENT';
-export const SELECT_GENRE = 'SELECT_GENRE';
+export const REGISTER_USER = 'REGISTER_USER';

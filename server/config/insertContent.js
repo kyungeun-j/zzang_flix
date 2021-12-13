@@ -1,14 +1,6 @@
 const mysql = require('mysql');
 const fs = require('fs');
-
-const conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'zzang',
-    password: '1234',
-    database: 'zzangflix'
-});
-
-conn.connect();
+const db = require('./db');
 
 fs.readFile('../mv.json', 'utf8', (error, jsonFile) => {
     if (error) return console.log(error);
@@ -29,10 +21,8 @@ fs.readFile('../mv.json', 'utf8', (error, jsonFile) => {
 
     const sql = 'INSERT INTO content VALUES ?';
     
-    conn.query(sql, [values], (err) => {
+    db.query(sql, [values], (err) => {
         if (err) throw console.log(err);
-        conn.end();
+        db.end();
     });
 });
-
-module.exports = conn;

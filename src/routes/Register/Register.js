@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // import { useDispatch } from 'react-redux';
-import { useHistory , withRouter } from 'react-router';
+import { useHistory, withRouter } from 'react-router';
 import styled from 'styled-components';
 import { compareEmail } from '../../actions/userAction';
 
@@ -24,12 +24,12 @@ function Register() {
             compareEmail({email}).then(res => {
                 if (res.compareEmail) {
                     history.push({
-                        pathname: '/register/regform',
+                        pathname: '/login',
                         state: { email }
                     })
                 } else {
                     history.push({
-                        pathname: '/login',
+                        pathname: '/register/regform',
                         state: { email }
                     })
                 }

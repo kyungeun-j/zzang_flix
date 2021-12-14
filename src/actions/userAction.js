@@ -3,6 +3,14 @@ import axios from 'axios';
 
 const USER_URL = '/api/user';
 
+export async function loginUser(loginData) {
+    const result = await axios.post(USER_URL+'/login', loginData).then(res => res.data.msg)
+
+    return {
+        loginResult: result
+    };
+}
+
 export async function compareEmail(email) {
     const result = await axios.post(USER_URL+'/compare_email', email).then(res => res.data.compareResult)
     
@@ -17,15 +25,6 @@ export async function registerUser(userData) {
     delete userData['userID']
     return {
         type: REGISTER_USER,
-        user: userData
-    };
-}
-
-export async function loginUser(userData) {
-    await axios.post(USER_URL+'/login', userData).then(res => res.data.loginSuccess)
-
-    delete userData['userID']
-    return {
         user: userData
     };
 }

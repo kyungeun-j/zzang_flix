@@ -35,6 +35,31 @@ app.post('/api/user/register', (req, res) => {
   }) 
 })
 
+app.post('/api/user/login', (req, res) => {
+  const email = req.body.email
+  const pw = req.body.password
+
+  db.query("SELECT * FROM user WHERE email = ?", email, (err, data) => {
+    if (!err) {
+      if (data.length < 1) {
+        res.send({ msg: 'email fail' })
+      } else {
+        db.query("SELECT * FROM user WHERE email = ? AND password = ?", [email, pw], (err, data) => {
+          console.log(data)
+          if (data.length < 1) {
+            res.send({ msg: 'password fail' })
+          } else {
+            res.send({ msg: 'login success' })
+          }
+        })
+      }
+    } else {
+      res.send({ msg: 'login fail' })
+    }
+  })
+  
+})
+
 app.listen(PORT, () => {
     console.log(`Server On : http://localhost:${PORT}/`)
 })

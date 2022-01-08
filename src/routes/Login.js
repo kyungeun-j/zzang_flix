@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../_actions/userAction';
 import Cookies from 'universal-cookie';
+import axios from 'axios';
 
 
 function Login() {
@@ -28,7 +29,8 @@ function Login() {
         e.preventDefault();
         dispatch(loginUser({ email, password})).then(res => {
             if (res.payload.result) {
-                cookies.set('isLogin', res.payload.token);
+                cookies.set('token', res.payload.token);
+                // axios.defaults.headers.common['Authorization'] = `Bearer ${res.payload.token}`
                 history.push({
                     pathname: '/content'
                 })

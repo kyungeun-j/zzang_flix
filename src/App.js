@@ -1,59 +1,52 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useDispatch, connect, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, Switch } from 'react-router-dom';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import Content from './routes/Content';
-import Welecome from './routes/Welecome';
 import Register from './routes/Register/Register';
 import RegisterForm from './routes/Register/RegisterForm';
+import Cookies from 'universal-cookie';
+import { logoutUser } from '../src/_actions/userAction';
 
 function App() {
-
-  const [isLogin, setIsLogin] = useState(false);
+  const cookies = new Cookies();
   const history = useHistory();
+  const dispatch = useDispatch();
+  let user = useSelector(state => state.user);
 
-  useEffect(() => {
-    if (localStorage.getItem('login_email') === null) {
-      console.log(isLogin)
-    } else {
-      setIsLogin(true)
-      console.log(isLogin)
-    }
-  })
+  const onClick = (e) => {
+    e.preventDefault();
+    cookies.remove('token')
+    dispatch(logoutUser({userCookie: cookies.get('token')}))
 
-  const onLogin = () => {
-    if (isLogin) {
-      // 로그인되어있을 때 로그아웃
-      localStorage.removeItem('login_email')
-      history.push('/')
-    } else {
-      // 로그아웃되어있을 때 로그인
-      history.push('/login')
-    }
-  }
+    history.push({
+      pathname: '/'
+    })
+  };
 
   return (
     <>
       <ul>
-        {console.log(isLogin)}
         <li>
-          <Link to={ isLogin ? '/content' : '/' }>홈</Link>
+          <Link to={ user.isLogin ? '/content' : '/' }>로고</Link>
         </li>
         <li>
-          <button type='button' onClick={ onLogin }>{isLogin ? '로그아웃' : '로그인' }</button>
+          { user.isLogin ? <button onClick={ onClick }>로그아웃</button> : <Link to={ '/login' }>로그인</Link> }
         </li>
       </ul>
       <Route path="/" exact={ true } component={ Home } />
       <Route path="/login" component={ Login } />
-      <Route path="/register" exact={ true } component={ Register } />
-      <Route path="/register/regform" component={ RegisterForm } />
-      <Route path="/welecome" component={ Welecome } />
-      <Route path="/content" component={ Content } isLogin={ isLogin } />
+      <Switch>
+          <Route path="/register" exact={ true } component={ Register } />
+          <Route path="/register/regform" component={ RegisterForm } />
+      </Switch>
+      
+      <Route path="/content" component={ Content } />
     </>
   );
 }
-
 export default App;

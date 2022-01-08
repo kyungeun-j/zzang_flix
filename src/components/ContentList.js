@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 function ContentList({ content }) {
     const { img, title } = content;
 
-    // onSelect = 
     return (
         <>
             <div>

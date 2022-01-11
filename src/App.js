@@ -3,14 +3,40 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useDispatch, connect, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Route } from 'react-router';
-import { Link, Switch } from 'react-router-dom';
-import Home from './routes/Home';
-import Login from './routes/Login';
-import Content from './routes/Content';
-import Register from './routes/Register/Register';
-import RegisterForm from './routes/Register/RegisterForm';
+import { Link } from 'react-router-dom';
+import Home from './components/Home';
+import Content from './components/Content';
+import Login from './components/Login';
+import Register from './components/Register';
+import RegisterForm from './components/RegisterForm';
 import Cookies from 'universal-cookie';
 import { logoutUser } from '../src/_actions/userAction';
+import logo from '../src/static/images/logo.png';
+import styled, { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;  
+  }
+
+  body {
+    box-sizing: border-box;
+    background: linear-gradient( rgba(0,0,0,0.5),rgba(0,0,0,0.5) ),url(/static/media/background.2568942a.jpeg) no-repeat left top / 139rem;
+  }
+`
+
+const Nav = styled.nav`
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  margin: 0;
+
+  .logoImg {
+    width: 7rem;
+  }
+`;
 
 function App() {
   const cookies = new Cookies();
@@ -30,21 +56,21 @@ function App() {
 
   return (
     <>
-      <ul>
+      <GlobalStyle />
+      <Nav className='nav'>
         <li>
-          <Link to={ user.isLogin ? '/content' : '/' }>로고</Link>
+          <Link to={ user.isLogin ? '/content' : '/' }>
+            <img src={ logo } alt='logo' className='logoImg' />
+          </Link>
         </li>
         <li>
           { user.isLogin ? <button onClick={ onClick }>로그아웃</button> : <Link to={ '/login' }>로그인</Link> }
         </li>
-      </ul>
+      </Nav>
       <Route path="/" exact={ true } component={ Home } />
       <Route path="/login" component={ Login } />
-      <Switch>
-          <Route path="/register" exact={ true } component={ Register } />
-          <Route path="/register/regform" component={ RegisterForm } />
-      </Switch>
-      
+      <Route path="/register" exact={ true } component={ Register } />
+      <Route path="/regform" component={ RegisterForm } />
       <Route path="/content" component={ Content } />
     </>
   );

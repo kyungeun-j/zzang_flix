@@ -9,7 +9,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddlerware from 'redux-promise';
 import reducer from './_reducers/index';
-import axios from 'axios';
 import persistStore from 'redux-persist/es/persistStore';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistReducer from 'redux-persist/es/persistReducer';

@@ -1,4 +1,4 @@
-import { LOGIN_USER, AUTH_USER, LOGOUT_USER } from './types';
+import { LOGIN_USER, LOGOUT_USER } from './types';
 import axios from 'axios';
 
 const USER_URL = '/api/user';
@@ -33,21 +33,8 @@ export async function compareEmail(email) {
 export async function registerUser(userData) {
     const result = await axios.post(USER_URL+'/register', userData).then(res => res.data.registerSuccess)
 
+    console.log(result)
     return {
         registerUser: result
-    }
-    // delete userData['userID']
-    // return {
-    //     type: REGISTER_USER,
-    //     user: userData
-    // };
-}
-
-export function auth() {
-    const result = axios.get(USER_URL+'/auth').then(res => res.data)
-
-    return {
-        type: AUTH_USER,
-        payload: result
     }
 }

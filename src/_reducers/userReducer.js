@@ -1,4 +1,4 @@
-import { LOGIN_USER, AUTH_USER, LOGOUT_USER } from '../_actions/types'
+import { LOGIN_USER, LOGOUT_USER } from '../_actions/types'
 
 const initialState = {
     isLogin: false,

@@ -39,10 +39,12 @@ app.post('/api/user/compare_email', (req, res) => {
 // register
 app.post('/api/user/register', (req, res) => {
   const user = [Object.values(req.body).map(body => body)];
+  console.log('user', user)
 
   db.query("INSERT INTO user VALUES ?", [user] , (err) => {
-    if (err) res.send({ registerSuccess: false});
-    else res.send({ registerSuccess: true });
+    console.log(err)
+    if (err === null) res.send({ registerSuccess: true});
+    else res.send({ registerSuccess: false });
   }) 
 })
 
@@ -79,18 +81,15 @@ app.post('/api/user/login', (req, res) => {
   })
 })
 
+// logout
 app.post('/api/user/logout', (req, res) => {
-  console.log(req.body.userCookie)
     let result = false;
     if (req.body.userCookie == undefined) {
       result = true;
-      // authResult = jwt.verify(req.body.userCookie, SECRET_KEY).email;
     } else {
       result = false;
     }
     res.send(result)
-    
-  // res.send(req.headers.cookie === undefined ? false : true)
 })
 
 app.listen(PORT, () => {

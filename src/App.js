@@ -12,7 +12,8 @@ import RegisterForm from './components/RegisterForm';
 import Cookies from 'universal-cookie';
 import { logoutUser } from '../src/_actions/userAction';
 import logo from '../src/static/images/logo.png';
-import background from '../src/static/images/background.jpeg';
+import loginbackground from '../src/static/images/loginBackground.jpeg';
+import mainbackground from '../src/static/images/mainBackground.jpeg';
 import styled, { createGlobalStyle, css } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
@@ -22,39 +23,68 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    box-sizing: border-box;
-    background: linear-gradient( rgba(0,0,0,0.5),rgba(0,0,0,0.5) ),url(${background}) no-repeat left top / 139rem;
+    ${({ location }) => 
+    ( location =='/login' &&
+        css `
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url(${loginbackground}) no-repeat left top / 139rem;
+        `
+      ||
+      location == '/' &&
+        css `
+        background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.3) ,rgba(0,0,0,0.9)),url(${mainbackground}) no-repeat left 67% / cover;
+        height: 100vh;
+        `
+    )
   }
 `
-
 const Nav = styled.nav`
   list-style: none;
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem;
+  align-items: center;
   margin: 0;
   ${(props) =>
     props.location =='/login' &&
     css`
-    padding: 2px 10px;
-    background: linear-gradient( rgba(0,0,0,0.5),rgba(0,0,0,0) );
-  `
-  }
+    padding: 3px 23px;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0));
+
+    .login_outBtn {
+      display: none;
+      }
+    `
+    ||
+    props.location !='/login' &&
+    css`
+    padding: 11px 39px;
+    `
+    }
 
   .logoImg {
     ${(props) =>
       props.location =='/login' &&
       css`
-          width: 13rem;
+      width: 13rem;
           
       `
       ||
       props.location !='/login' &&
       css`
-          width: 7rem;
+      width: 10.5rem;
           
       `
     }
+  }
+
+  .login_outBtn a, button {
+    padding: 9px 17px;
+    margin-right: 18px;
+    border-radius: 4px;
+    background-color: #e50914;
+    text-decoration: none;
+    color: white;
+    margin: 0;
+    border: 0;
   }
 `;
 
@@ -78,14 +108,14 @@ function App() {
 
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle location={ location.pathname } />
       <Nav className='nav' location={ location.pathname }>
         <li>
           <Link to={ user.isLogin ? '/content' : '/' }>
             <img src={ logo } alt='logo' className='logoImg' />
           </Link>
         </li>
-        <li>
+        <li className='login_outBtn'>
           { user.isLogin ? <button onClick={ onClick }>로그아웃</button> : <Link to={ '/login' }>로그인</Link> }
         </li>
       </Nav>

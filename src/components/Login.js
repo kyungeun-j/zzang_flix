@@ -6,7 +6,7 @@ import { loginUser } from '../_actions/userAction';
 import Cookies from 'universal-cookie';
 import styled, { css } from 'styled-components';
 
-const LoginSection = styled.div`
+const LoginSection = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +47,6 @@ const LoginInputDiv = styled.div`
     margin-bottom: 16px;
     height: 3rem;
     border: 0;
-    // border-bottom: 2px solid #E87C03;
     border-bottom: 2px solid #333333;
     border-radius: 5px;
     background-color: #333333;
@@ -101,6 +100,8 @@ const LoginErrorDiv = styled.div`
     margin-bottom: 16px;
 `;
 const RegisterLink = styled.div`
+    width: 19.3rem;
+
     & span {
         color: #737373;
     }
@@ -180,12 +181,12 @@ function Login() {
                     <LoginErrorDiv loginError={ loginError } value={loginError}>{ loginError }</LoginErrorDiv>
                     <LoginInputDiv onClick={ onLoginHandler } select={ emailSelect }>
                         <LoginLabel>이메일 주소</LoginLabel>
-                        <LoginInput type="email" value={ email } onChange={ emailHandler } ref={el => (inputRef.current[0] = el)} tapindex="0" required />
+                        <LoginInput type="email" value={ email } onChange={ emailHandler } ref={el => (inputRef.current[0] = el)} required />
                     </LoginInputDiv>
                     {/* <LoginErrorLabel>{ emailError }</LoginErrorLabel> */}
                     <LoginInputDiv onClick={ onLoginHandler } select={ pwSelect }>
                         <LoginLabel>비밀번호</LoginLabel>
-                        <LoginInput type="password" value={ password } onChange={ passwordHandler } ref={el => (inputRef.current[1] = el)} tapindex="1" required />
+                        <LoginInput type="password" value={ password } onChange={ passwordHandler } ref={el => (inputRef.current[1] = el)} required />
                     </LoginInputDiv>
                     {/* <LoginErrorLabel>{ pwError }</LoginErrorLabel> */}
 

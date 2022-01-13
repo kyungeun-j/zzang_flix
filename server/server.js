@@ -42,7 +42,7 @@ app.post('/api/user/register', (req, res) => {
   console.log('user', user)
 
   db.query("INSERT INTO user VALUES ?", [user] , (err) => {
-    console.log(err)
+    console.log('register',err)
     if (err === null) res.send({ registerSuccess: true});
     else res.send({ registerSuccess: false });
   }) 
@@ -55,6 +55,8 @@ app.post('/api/user/login', (req, res) => {
   // email & password 확인
   db.query("SELECT * FROM user WHERE email = ?", email, (err, data) => {
     if (!err) {
+      console.log(data)
+      console.log(data.length)
       if (data.length < 1) {
         res.send({ result: false, msg: 'email fail' })
       } else {

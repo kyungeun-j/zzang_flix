@@ -6,7 +6,6 @@ const USER_URL = '/api/user';
 export async function loginUser(loginData) {
     const result = await axios.post(USER_URL+'/login', loginData).then(res => res.data)
 
-    console.log(result)
     return {
         type: LOGIN_USER,
         payload: result

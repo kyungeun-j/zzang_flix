@@ -9,10 +9,10 @@ export default function (state=initialState, action) {
     console.log(state, action)
     switch (action.type) {
         case LOGIN_USER:
-            return { ...state, isLogin: true, userEmail: action.payload.userEmail };
+            return action.payload.result === true ? { isLogin: true, userEmail: action.payload.userEmail } : { ...state };
         case LOGOUT_USER:
             return action.payload === true ? { isLogin: false, userEmail: undefined} :
-            { ...state, isLogin: true, userEmail: action.payload.userEmail };
+            { ...state };
         default:
             return state;
     }

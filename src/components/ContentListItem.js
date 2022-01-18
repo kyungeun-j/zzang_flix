@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ContentList({ content }) {
+function ContentListItem({ content }) {
     const { img, title } = content;
 
     return (
@@ -15,7 +15,7 @@ function ContentList({ content }) {
 }
 
 
-ContentList.propTypes = {
+ContentListItem.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     year: PropTypes.string,
@@ -26,4 +26,4 @@ ContentList.propTypes = {
     genreID: PropTypes.number
 }
 
-export default ContentList;
+export default ContentListItem;

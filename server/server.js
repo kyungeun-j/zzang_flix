@@ -10,7 +10,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
-const cookie = require('cookie');
 const SECRET_KEY = process.env.SECRET_KEY;
 
 app.use(cors());
@@ -75,7 +74,7 @@ app.post('/api/user/login', (req, res) => {
                 expiresIn: '1h',
               }
             );
-            res.send({ result: true, userEmail: email, token: accessToken })
+            res.send({ result: true, userEmail: email, token: accessToken });
           }
         })
       }
@@ -85,13 +84,11 @@ app.post('/api/user/login', (req, res) => {
 
 // logout
 app.post('/api/user/logout', (req, res) => {
-    let result = false;
-    if (req.body.userCookie == undefined) {
-      result = true;
+    if (req.body.token == undefined) {
+      res.send(true);
     } else {
-      result = false;
+      res.send(false);
     }
-    res.send(result)
 })
 
 app.listen(PORT, () => {

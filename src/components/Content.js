@@ -1,7 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-import ContentList from "../components/ContentList";
+import ContentListItem from "./ContentListItem";
 import SelectGenre from "../components/SelectGenre";
+import styled from "styled-components";
+
+const ContentList = styled.div`
+  color: white;
+`;
 
 function Content() {
   const [contents, setContents] = useState([]);
@@ -23,16 +28,19 @@ function Content() {
   return (
     <>
       <SelectGenre handleGenre={ handleGenre } genre={ genre } />
-      {
-        genre === 'all' ?
-        contents.map(content => (
-          <ContentList key={ content.id } content={ content } />
-        )) :
-        contents.filter(content => (Number(genre) === content.genreID))
-        .map(gContent => (
-          <ContentList key={ gContent.id } content={ gContent } />
-        ))
-      }
+      <ContentList>
+        {
+          genre === 'all' ?
+          contents.map(content => (
+            <ContentListItem key={ content.id } content={ content } />
+          ))
+          :
+          contents.filter(content => (Number(genre) === content.genreID))
+          .map(gContent => (
+            <ContentListItem key={ gContent.id } content={ gContent } />
+          ))
+        }
+      </ContentList>
     </>
   );
 }

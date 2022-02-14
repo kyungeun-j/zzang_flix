@@ -1,20 +1,21 @@
 
-import React, { useState, useEffect, Suspense } from 'react';
-import { useDispatch, connect, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import { Route } from 'react-router';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Content from './components/Content';
 import Login from './components/Login';
 import Register from './components/Register';
 import RegisterForm from './components/RegisterForm';
-import Cookies from 'universal-cookie';
-import { logoutUser } from '../src/_actions/userAction';
 import loginbackground from '../src/static/images/loginBackground.jpeg';
 import mainbackground from '../src/static/images/mainBackground.jpeg';
 import { createGlobalStyle, css } from 'styled-components';
 import Navigator from './components/Navigator';
+import GenreContent from './components/GenreContent';
+import Cookies from 'universal-cookie';
+import { loginCheck } from '../src/_actions/userAction';
+import PrivateRoute from './components/route_control/PrivateRoute';
+import PublicRoute from './components/route_control/PublicRoute';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -24,49 +25,56 @@ const GlobalStyle = createGlobalStyle`
 
 body {
   ${({ location }) => 
-    ( location =='/login' &&
-        css `
-        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url(${loginbackground}) no-repeat left top / 139rem;
-        `
-      ||
+    ( 
       location == '/' &&
         css `
         background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.3) ,rgba(0,0,0,0.9)),url(${mainbackground}) no-repeat left 67% / cover;
         height: 100vh;
         `
-      || 
-      location != '/login' && location != '/' &&
+      ||
+      location =='/login' &&
+        css `
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url(${loginbackground}) no-repeat left top / 139rem;
+        `
+      ||
+      location =='/regform' &&
+        css `
+        background: white;
+        `
+      ||
         css`
         background: black;
         `
     )
   }
-`
+`;
 
   function App() {
-
-  const cookies = new Cookies();
-  const history = useHistory();
   const location = useLocation();
+  const cookies = new Cookies();
   const dispatch = useDispatch();
   let user = useSelector(state => state.user);
 
-  // const [isLogin, setIsLogin] = useState(false);
+  // login check
+  useEffect(() => {
+      dispatch(loginCheck({ token: cookies.get('token') }))
+  }, [])
 
-  //   useEffect(() => {
-  //       setIsLogin(cookies.get('token') !== undefined ? true : false)
-  //   }, [isLogin])
-
-  //   console.log(location)
   return (
     <>
       <GlobalStyle location={ location.pathname } />
-      <Navigator location={ location.pathname } user={ user }/>
-      <Route path="/" exact={ true } component={ Home } />
-      <Route path="/login" component={ Login } />
-      <Route path="/register" exact={ true } component={ Register } />
-      <Route path="/regform" component={ RegisterForm } />
-      <Route path="/content" component={ Content } />
+      <Navigator user={ user } />
+      <Switch>
+        // PrivateRoute: 회원만 접근 가능
+        // PublicRoute: 모든 사용자 접근 가능
+        // restricted :: true: 로그인 여부 관계없이 접근 가능 / false: 로그인 상태에선 접근 불가능
+        <PublicRoute restricted={true} path="/" component={ Home } user={ user } exact />
+        <PublicRoute restricted={true} path="/login" component={ Login } user={ user } />
+        <PublicRoute restricted={true} path="/register" exact={ true } component={ Register } user={ user } />
+        <PublicRoute restricted={true} path="/regform" component={ RegisterForm } user={ user } />
+        <PrivateRoute path="/content" component={ Content } user={ user } exact />
+        <PrivateRoute path="/content/:subMenu" component={ GenreContent } user={ user } exact />
+      </Switch>
     </>
   );
 }

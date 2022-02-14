@@ -2,13 +2,11 @@ const express = require('express');
 const app  = express();
 const PORT = process.env.PORT || 4000;
 const db = require('./config/db');
-// const bodyParser = require('body-parser');
 const cors = require('cors');
-// const { generateToken } = require('./config/token');
 
 // jwt
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -16,7 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// content 데이터 받아오기
+// content
+// content 리스트
 app.get('/api/content', (req, res) => {
   db.query("SELECT * FROM content", (err, data) => {
     if(!err) res.send({ content: data });
@@ -24,6 +23,7 @@ app.get('/api/content', (req, res) => {
   })
 })
 
+// user
 // user email 중복 확인
 app.post('/api/user/compare_email', (req, res) => {
   db.query("SELECT * FROM user where email = ?", [[req.body.email]], (err, data) => {
@@ -38,12 +38,11 @@ app.post('/api/user/compare_email', (req, res) => {
 // register
 app.post('/api/user/register', (req, res) => {
   const user = [Object.values(req.body).map(body => body)];
-  console.log('user', user)
 
   db.query("INSERT INTO user VALUES ?", [user] , (err) => {
-    console.log('register',err)
-    if (err === null) res.send({ registerSuccess: true});
-    else res.send({ registerSuccess: false });
+    console.log(err)
+    if (err === null) res.send(true);
+    else res.send(false);
   }) 
 })
 
@@ -64,7 +63,7 @@ app.post('/api/user/login', (req, res) => {
           if (data.length < 1) {
             res.send({ result: false, msg: 'password fail' })
           } else {
-            // jwt 토큰 생성, pw는 보안때문에 넣지 않는 것이 좋음.
+            // jwt 토큰 생성, pw는 보안때문에 넣지 않는 것이 좋음, 유효기간 1시간(임시)
             const accessToken = jwt.sign(
               {
                 email
@@ -89,6 +88,14 @@ app.post('/api/user/logout', (req, res) => {
     } else {
       res.send(false);
     }
+})
+
+// login check
+app.post('/api/user/loginCheck', (req, res) => {
+  jwt.verify(req.body.token, SECRET_KEY, (error, decoded) => {
+    if(error) res.send(false);
+    else res.send(decoded.email);
+  });
 })
 
 app.listen(PORT, () => {

@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from '../_actions/types'
+import { LOGIN_CHECK, LOGIN_USER, LOGOUT_USER } from '../_actions/types'
 
 const initialState = {
     isLogin: false,
@@ -6,8 +6,9 @@ const initialState = {
 };
 
 export default function (state=initialState, action) {
-    console.log(state, action)
     switch (action.type) {
+        case LOGIN_CHECK:
+            return action.payload === false ? { isLogin: false, userEmail: undefined } : { isLogin: true, userEmail: action.payload };
         case LOGIN_USER:
             return action.payload.result === true ? { isLogin: true, userEmail: action.payload.userEmail } : { ...state };
         case LOGOUT_USER:

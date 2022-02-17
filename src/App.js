@@ -63,7 +63,7 @@ body {
   return (
     <>
       <GlobalStyle location={ location.pathname } />
-      <Navigator user={ user } />
+      <Navigator user={ user } location={ location.pathname } />
       <Switch>
         // PrivateRoute: 회원만 접근 가능
         // PublicRoute: 모든 사용자 접근 가능

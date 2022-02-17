@@ -16,18 +16,25 @@ const Nav = styled.nav`
     color: white;
 
     ${(props) =>
+        props.location == '/' &&
+        css`
+            padding: 11px 39px;
+        `
+        ||
         props.location == '/login' &&
         css`
             padding: 3px 23px;
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0));
+
             .login_outBtn {
-            display: none;
-        }
+                display: none;
+            }
         `
         ||
-        props.location == '/' &&
+        props.location == '/regform' &&
         css`
-            padding: 11px 39px;
+            padding: 2px 20px;
+            border-bottom: 1px solid #e6e6e6;
         `
         ||
         props.location != '/login' && props.location != '/' &&
@@ -38,15 +45,19 @@ const Nav = styled.nav`
 
     .logoImg {
         ${(props) =>
-            props.location == '/login' &&
-            css`
-                width: 13rem;
-                
-            `
-            ||
             props.location == '/' &&
             css`
                 width: 10.5rem;
+            `
+            ||
+            props.location == '/login' &&
+            css`
+                width: 13rem;
+            `
+            ||
+            props.location == '/regform' &&
+            css`
+                width: 13.5rem;
             `
             ||
             props.location != '/login' && props.location != '/' &&
@@ -66,7 +77,7 @@ const Nav = styled.nav`
         list-style: none;
         display: flex;
         justify-content: space-around;
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .login_outBtn {
@@ -83,6 +94,16 @@ const Nav = styled.nav`
         color: white;
         margin: 0;
         border: 0;
+
+        ${(props) =>
+            props.location == '/regform' &&
+            css`
+                background-color: transparent;
+                color: black;
+                font-weight: bold;
+                font-size: 20px;
+            `
+        }
     }
 `;
 
@@ -121,7 +142,7 @@ const UserBtnList = styled.ul`
         color: #ffffffcf;
     }
 
-    ${Nav} .login_outBtn:hover & {
+    ${ Nav } .login_outBtn:hover & {
         display: block;
     }
 
@@ -147,21 +168,21 @@ function Navigator({ location, user }) {
 
     return (
         <Nav location={ location }>
-            <li className='logo_navBtns'>
-                <Link to={user.isLogin ? '/content' : '/'}>
-                    <img src={logo} alt='logo' className='logoImg' />
+            <ul className='logo_navBtns'>
+                <Link to={ user.isLogin ? '/content' : '/' }>
+                    <img src={ logo } alt='logo' className='logoImg' />
                 </Link>
 
                 { location === '/content' ?
                     <ul>
-                        <li>홈</li>
-                        <li>장르별</li>
+                        <Link to={ user.isLogin ? '/content' : '/' }>홈</Link>
+                        <Link to='/content/genre'>장르별</Link>
                     </ul>
                     :
                     <></>
                 }
-            </li>
-            <li className='login_outBtn'>
+            </ul>
+            <li className='login_outBtn' >
                 {
                 user.isLogin ?
                 <>
@@ -174,14 +195,9 @@ function Navigator({ location, user }) {
                         <li onClick={ onLogout }>짱플릭스에서 로그아웃</li>
                     </UserBtnList>
                 </>
-                : 
+                :
                 <Link to={'/login'}>로그인</Link>
                 }
-                {/* {
-                    user.isLogin ?
-                    <button onClick={onClick}>로그아웃</button> : 
-                    <Link to={'/login'}>로그인</Link>
-                } */}
             </li>
         </Nav>
     )

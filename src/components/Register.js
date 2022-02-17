@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 import { compareEmail } from '../_actions/userAction';
 
-const RegisgerContainer = styled.div`
+const RegisgerSection = styled.section`
     display: flex;
     width: 600px;
     height: 61px;
@@ -57,7 +57,7 @@ function Register() {
 
     useEffect(() => {
         if (select) inputRef.current.focus();
-    }, [select])
+    }, [select]);
 
     const emailHandler = (e) => {
         setEmail(e.currentTarget.value);
@@ -65,36 +65,35 @@ function Register() {
 
     const onRegisterHandler = (e) => {
         if (e.currentTarget.children[1].type === 'email') {
-            setSelect(true)
+            setSelect(true);
         }
-    }
+    };
 
     const onClick = (e) => {
         e.preventDefault();
             compareEmail({email}).then(res => {
-                console.log(res.compareEmail)
-                if (res.compareEmail) {
+                if (res) {
                     history.push({
                         pathname: '/login',
                         state: { email }
-                    })
+                    });
                 } else {
                     history.push({
                         pathname: '/regform',
                         state: { email }
-                    })
+                    });
                 }
-            })
+            });
     };
 
     return (
-        <RegisgerContainer>
+        <RegisgerSection>
             <RegisterInputDiv onClick={ onRegisterHandler } select={ select }>
                 <RegisterLabel>이메일 주소</RegisterLabel>
                 <RegisterInput type="email" value={ email } onChange={ emailHandler } ref={ inputRef } required />
             </RegisterInputDiv>
             <RegisterBtn onClick={ onClick }>시작하기</RegisterBtn>
-        </RegisgerContainer>
+        </RegisgerSection>
     );
 }
 

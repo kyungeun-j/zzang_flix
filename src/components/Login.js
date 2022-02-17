@@ -25,7 +25,7 @@ const LoginContainer = styled.div`
     ${({ loginError }) => 
         ( loginError != '' &&
             css `
-            height: 34rem;
+                height: 34rem;
             `
         )
     }
@@ -44,7 +44,6 @@ const LoginInput = styled.input`
     display: none;
 `;
 const LoginInputDiv = styled.div`
-    margin-bottom: 16px;
     height: 3rem;
     border: 0;
     border-bottom: 2px solid #333333;
@@ -59,17 +58,17 @@ const LoginInputDiv = styled.div`
     // email/pw div를 눌렀을 때 input 나타남
     ${({ select }) => ( select &&
         css`
-        ${ LoginLabel } {
-            font-size: 11px;
-        }
-        ${ LoginInput } {
-            display: block;
-            background: none;
-            border: 0;
-            outline: none;
-            color: white;
-            font-size: 16px;
-        }
+            ${ LoginLabel } {
+                font-size: 11px;
+            }
+            ${ LoginInput } {
+                display: block;
+                background: none;
+                border: 0;
+                outline: none;
+                color: white;
+                font-size: 16px;
+            }
         `
     )}
 `;
@@ -87,7 +86,7 @@ const LoginButton = styled.button`
 const LoginErrorDiv = styled.div`
     ${({ loginError }) => ( loginError == '' &&
         css `
-        display: none;
+            display: none;
         `
     )}
 
@@ -105,10 +104,18 @@ const RegisterLink = styled.div`
     & span {
         color: #737373;
     }
+
     .registerA {
         color: white;
         text-decoration: none;
     }
+`;
+const LoginErrorLabel = styled.label`
+    font-size: 13px;
+    color: #E87C03;
+`;
+const LoginInputSection = styled.section`
+    margin-bottom: 16px;
 `;
 
 function Login() {
@@ -128,11 +135,10 @@ function Login() {
 
     useEffect(() => {
         if (emailSelect) inputRef.current[0].focus();
-    }, [emailSelect])
-
+    }, [emailSelect]);
     useEffect(() => {
         if (pwSelect) inputRef.current[1].focus();
-    }, [pwSelect])
+    }, [pwSelect]);
 
     const emailHandler = (e) => {
         setEmail(e.currentTarget.value);
@@ -142,54 +148,70 @@ function Login() {
     };
 
     const onLoginHandler = (e) => {
-        if (e.currentTarget.children[1].type === 'email') {
-            setEmailSelect(true)
-        } else if (e.currentTarget.children[1].type === 'password') {
-            setPwSelect(true)
-        }
-    }
+        console.log(e.currentTarget)
+        if (e.currentTarget.children[0].children[1].type === 'text') {
+            setEmailSelect(true);
+        } else if (e.currentTarget.children[0].children[1].type === 'password') {
+            setPwSelect(true);
+        } 
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(loginUser({ email, password})).then(res => {
-            if (res.payload.result) {
-                cookies.set('token', res.payload.token);
-                history.push({
-                    pathname: '/content'
-                })
-            } else {
-                if (res.payload.msg === 'email fail') {
-                    setLoginError('죄송합니다. 이 이메일 주소를 사용하는 계정을 찾을 수 없습니다. 다시 시도하시거나 새로운 계정을 등록하세요.')
-                    inputRef.current[0].parentElement.style.borderBottom = '2px solid #E87C03';
-                    inputRef.current[1].parentElement.style.borderBottom = '2px solid #333333';
-                } else if (res.payload.msg === 'password fail') {
-                    setLoginError('비밀번호를 잘못 입력하셨습니다. 다시 입력하시거나 비밀번호를 재설정하세요.')
-                    inputRef.current[0].parentElement.style.borderBottom = '2px solid #333333';
-                    inputRef.current[1].parentElement.style.borderBottom = '2px solid #E87C03';
+        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) {
+            setEmailError('정확한 이메일 주소나 전화번호를 입력하세요.');
+            inputRef.current[0].parentElement.style.borderBottom = '2px solid #E87C03';
+            inputRef.current[1].parentElement.style.borderBottom = '2px solid #333333';
+        } else if (password.length < 4 || password.length > 60) {
+            setPwError('비밀번호는 4 - 60자 사이여야 합니다.');
+            inputRef.current[0].parentElement.style.borderBottom = '2px solid #333333';
+            inputRef.current[1].parentElement.style.borderBottom = '2px solid #E87C03';
+        } else {
+            if (emailError !== '' || pwError !== '') setEmailError(''); setPwError('');
+
+            dispatch(loginUser({ email, password})).then(res => {
+                if (res.payload.result) {
+                    cookies.set('token', res.payload.token);
+                    history.push({
+                        pathname: '/content'
+                    });
                 } else {
-                    setLoginError('죄송합니다. 로그인을 할 수 없습니다.')
+                    if (res.payload.msg === 'email fail') {
+                        setLoginError('죄송합니다. 이 이메일 주소를 사용하는 계정을 찾을 수 없습니다. 다시 시도하시거나 새로운 계정을 등록하세요.');
+                        inputRef.current[0].parentElement.style.borderBottom = '2px solid #E87C03';
+                        inputRef.current[1].parentElement.style.borderBottom = '2px solid #333333';
+                    } else if (res.payload.msg === 'password fail') {
+                        setLoginError('비밀번호를 잘못 입력하셨습니다. 다시 입력하시거나 비밀번호를 재설정하세요.');
+                        inputRef.current[0].parentElement.style.borderBottom = '2px solid #333333';
+                        inputRef.current[1].parentElement.style.borderBottom = '2px solid #E87C03';
+                    } else {
+                        setLoginError('죄송합니다. 로그인을 할 수 없습니다.');
+                    }
                 }
-            }
-        })
-    }
+            });
+        }
+    };
 
     return (
-        <LoginSection>
+        <LoginSection onClick={ onLoginHandler }>
             <LoginContainer loginError={ loginError }>
                 <LoginForm onSubmit={ onSubmit }>
                     <h1>로그인</h1>
-                    <LoginErrorDiv loginError={ loginError } value={loginError}>{ loginError }</LoginErrorDiv>
-                    <LoginInputDiv onClick={ onLoginHandler } select={ emailSelect }>
-                        <LoginLabel>이메일 주소</LoginLabel>
-                        <LoginInput type="email" value={ email } onChange={ emailHandler } ref={el => (inputRef.current[0] = el)} required />
-                    </LoginInputDiv>
-                    {/* <LoginErrorLabel>{ emailError }</LoginErrorLabel> */}
-                    <LoginInputDiv onClick={ onLoginHandler } select={ pwSelect }>
-                        <LoginLabel>비밀번호</LoginLabel>
-                        <LoginInput type="password" value={ password } onChange={ passwordHandler } ref={el => (inputRef.current[1] = el)} required />
-                    </LoginInputDiv>
-                    {/* <LoginErrorLabel>{ pwError }</LoginErrorLabel> */}
-
+                    <LoginErrorDiv loginError={ loginError }>{ loginError }</LoginErrorDiv>
+                    <LoginInputSection onClick={ onLoginHandler }>
+                        <LoginInputDiv select={ emailSelect }>
+                            <LoginLabel>이메일 주소</LoginLabel>
+                            <LoginInput type="text" value={ email } onChange={ emailHandler } ref={el => (inputRef.current[0] = el)} />
+                        </LoginInputDiv>
+                        <LoginErrorLabel>{ emailError }</LoginErrorLabel>
+                    </LoginInputSection>
+                    <LoginInputSection onClick={ onLoginHandler }>
+                        <LoginInputDiv select={ pwSelect }>
+                            <LoginLabel>비밀번호</LoginLabel>
+                            <LoginInput type="password" value={ password } onChange={ passwordHandler } ref={el => (inputRef.current[1] = el)} />
+                        </LoginInputDiv>
+                        <LoginErrorLabel>{ pwError }</LoginErrorLabel>
+                    </LoginInputSection>
                     <LoginButton type="submit">로그인</LoginButton>   
                 </LoginForm>
                 <RegisterLink>

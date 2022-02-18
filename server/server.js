@@ -16,12 +16,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // content
 // content 리스트
-app.get('/api/content', (req, res) => {
+app.get('/api/content/contentList', (req, res) => {
   db.query("SELECT * FROM content", (err, data) => {
-    if(!err) res.send({ content: data });
+    if(!err) res.send(data);
     else res.send(err);
-  })
-})
+  });
+});
+
+// genre 리스트
+app.get('/api/content/genreList', (req, res) => {
+  db.query("SELECT * FROM genre", (err, data) => {
+    if(!err) res.send(data);
+    else res.send(err);
+  });
+});
 
 // user
 // user email 중복 확인
@@ -32,8 +40,8 @@ app.post('/api/user/compare_email', (req, res) => {
     } else {
       res.send({ compareResult: false });
     }
-  })
-})
+  });
+});
 
 // register
 app.post('/api/user/register', (req, res) => {

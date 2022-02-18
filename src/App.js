@@ -11,7 +11,7 @@ import loginbackground from '../src/static/images/loginBackground.jpeg';
 import mainbackground from '../src/static/images/mainBackground.jpeg';
 import { createGlobalStyle, css } from 'styled-components';
 import Navigator from './components/Navigator';
-import GenreContent from './components/GenreContent';
+import ContentGenre from './components/ContentGenre';
 import Cookies from 'universal-cookie';
 import { loginCheck } from '../src/_actions/userAction';
 import PrivateRoute from './components/route_control/PrivateRoute';
@@ -21,6 +21,7 @@ const GlobalStyle = createGlobalStyle`
 * {
   margin: 0;
   padding: 0;  
+  font-size: 14px;
 }
 
 body {
@@ -73,7 +74,7 @@ body {
         <PublicRoute restricted={true} path="/register" exact={ true } component={ Register } user={ user } />
         <PublicRoute restricted={true} path="/regform" component={ RegisterForm } user={ user } />
         <PrivateRoute path="/content" component={ Content } user={ user } exact />
-        <PrivateRoute path="/content/:subMenu" component={ GenreContent } user={ user } exact />
+        <PrivateRoute path="/content/:subMenu" component={ ContentGenre } user={ user } exact />
       </Switch>
     </>
   );

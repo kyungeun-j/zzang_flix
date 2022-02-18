@@ -4,9 +4,12 @@ import { useHistory } from 'react-router';
 import styled, { css } from 'styled-components';
 import { compareEmail } from '../_actions/userAction';
 
-const RegisgerSection = styled.section`
-    display: flex;
+const RegisterSection = styled.section`
     width: 600px;
+    height: 65px
+`;
+const RegisterContainer = styled.div`
+    display: flex;
     height: 61px;
     border-radius: 2px;
     overflow: hidden;
@@ -48,11 +51,15 @@ const RegisterBtn = styled.button`
     color: white;
     border-style: none;
 `;
+const EmailErrorDiv = styled.div`
+    color: #ffa00a;
+`;
 
 function Register() {
     const history = useHistory();
     const inputRef = useRef();
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [select, setSelect] = useState(false);
 
     useEffect(() => {
@@ -71,6 +78,10 @@ function Register() {
 
     const onClick = (e) => {
         e.preventDefault();
+        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) {
+            setSelect(true);
+            setEmailError('이메일 주소를 입력하세요.');
+        } else {
             compareEmail({email}).then(res => {
                 if (res) {
                     history.push({
@@ -84,16 +95,22 @@ function Register() {
                     });
                 }
             });
+        }
     };
 
     return (
-        <RegisgerSection>
-            <RegisterInputDiv onClick={ onRegisterHandler } select={ select }>
-                <RegisterLabel>이메일 주소</RegisterLabel>
-                <RegisterInput type="email" value={ email } onChange={ emailHandler } ref={ inputRef } required />
-            </RegisterInputDiv>
-            <RegisterBtn onClick={ onClick }>시작하기</RegisterBtn>
-        </RegisgerSection>
+        <>
+        <RegisterSection>
+            <RegisterContainer>
+                <RegisterInputDiv onClick={ onRegisterHandler } select={ select }>
+                    <RegisterLabel>이메일 주소</RegisterLabel>
+                    <RegisterInput type="email" value={ email } onChange={ emailHandler } ref={ inputRef } required />
+                </RegisterInputDiv>
+                <RegisterBtn onClick={ onClick }>시작하기</RegisterBtn>
+            </RegisterContainer>
+            <EmailErrorDiv>{ emailError }</EmailErrorDiv>
+        </RegisterSection>
+        </>
     );
 }
 

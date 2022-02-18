@@ -68,7 +68,10 @@ const RegFormInputDiv = styled.div`
         `
     )}
 `;
-const RegFormErrorLabel = styled.label``;
+const RegFormErrorLabel = styled.label`
+    font-size: 13px;
+    color: #b92d2b;
+`;
 const RegFormLabel = styled.label``;
 const RegFormInput = styled.input`
     display: none;
@@ -97,6 +100,8 @@ function RegisterForm() {
     const [registerInfo, setRegisterInfo] = useState('');
     const [emailSelect, setEmailSelect] = useState(location.state !== undefined ? true : false);
     const [pwSelect, setPwSelect] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [pwError, setPwError] = useState('');
 
     useEffect(() => {
         if (emailSelect) inputRef.current[0].focus();
@@ -122,24 +127,32 @@ function RegisterForm() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        registerUser({ userID: null, email, password }).then(res => {
-            if (res.registerUser) {
-                dispatch(loginUser({ email, password})).then(res => {
-                    if (res.payload.result) {
-                        cookies.set('token', res.payload.token);
-                        history.push({
-                            pathname: '/content'
-                        })
-                    } else {
-                        history.push({
-                            pathname: '/Register'
-                        })
-                    }
-                })
-            } else {
-                setRegisterInfo('죄송합니다. 회원가입을 할 수 없습니다.')
-            }
-        })
+        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) {
+            setEmailError('이메일 주소를 입력해 주세요.');
+            inputRef.current[0].parentElement.style.border = '1px solid #b92d2b';
+        } else if (password.length < 4 || password.length > 60) {
+            setPwError('비밀번호를 입력해 주세요.');
+            inputRef.current[1].parentElement.style.border = '1px solid #b92d2b';
+        } else {
+            registerUser({ userID: null, email, password }).then(res => {
+                if (res.registerUser) {
+                    dispatch(loginUser({ email, password})).then(res => {
+                        if (res.payload.result) {
+                            cookies.set('token', res.payload.token);
+                            history.push({
+                                pathname: '/content'
+                            })
+                        } else {
+                            history.push({
+                                pathname: '/Register'
+                            })
+                        }
+                    })
+                } else {
+                    setRegisterInfo('죄송합니다. 회원가입을 할 수 없습니다.')
+                }
+            })
+        }
     };
 
     return(
@@ -157,14 +170,14 @@ function RegisterForm() {
                             <RegFormLabel>이메일 주소</RegFormLabel>
                             <RegFormInput type="text" value={ email } onChange={ emailHandler } ref={el => (inputRef.current[0] = el)} />
                         </RegFormInputDiv>
-                        <RegFormErrorLabel></RegFormErrorLabel>
+                        <RegFormErrorLabel>{ emailError }</RegFormErrorLabel>
                     </RegFormInputSection>
                     <RegFormInputSection onClick={ onRegisterHandler }>
                         <RegFormInputDiv select={ pwSelect }>
                             <RegFormLabel>비밀번호를 추가하세요</RegFormLabel>
                             <RegFormInput type="password" value={ password } onChange={ passwordHandler } ref={el => (inputRef.current[1] = el)} />
                         </RegFormInputDiv>
-                        <RegFormErrorLabel></RegFormErrorLabel>
+                        <RegFormErrorLabel>{ pwError }</RegFormErrorLabel>
                     </RegFormInputSection>
                     <RegisterButton>가입하기</RegisterButton>
                 </RegForm>

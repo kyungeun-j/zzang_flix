@@ -15,6 +15,11 @@ const Nav = styled.nav`
     margin: 0;
     color: white;
 
+    & a {
+        color: white;
+        text-decoration: none;
+    }
+
     ${(props) =>
         props.location == '/' &&
         css`

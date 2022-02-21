@@ -18,10 +18,13 @@ import PrivateRoute from './components/route_control/PrivateRoute';
 import PublicRoute from './components/route_control/PublicRoute';
 
 const GlobalStyle = createGlobalStyle`
+html {
+  font-size: 14px;
+}
+
 * {
   margin: 0;
-  padding: 0;  
-  font-size: 14px;
+  padding: 0;
 }
 
 body {

@@ -170,7 +170,7 @@ function Navigator({ location, user }) {
         pathname: '/'
         })
     };
-
+    
     return (
         <Nav location={ location }>
             <ul className='logo_navBtns'>
@@ -178,7 +178,7 @@ function Navigator({ location, user }) {
                     <img src={ logo } alt='logo' className='logoImg' />
                 </Link>
 
-                { location === '/content' ?
+                { location.indexOf('/content') >= 0 ?
                     <ul>
                         <Link to={ user.isLogin ? '/content' : '/' }>홈</Link>
                         <Link to='/content/genre'>장르별</Link>

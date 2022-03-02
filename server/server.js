@@ -16,11 +16,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // content
 // content 리스트
-app.get('/api/content/contentList', (req, res) => {
-  db.query("SELECT * FROM content", (err, data) => {
+app.post('/api/content/contentList', (req, res) => {
+  let query = '';
+
+  if (req.body.genreID === undefined) query = "SELECT * FROM content";
+  else query = "SELECT * FROM content WHERE genreID = " + req.body.genreID;
+  
+  db.query(query, (err, data) => {
     if(!err) res.send(data);
     else res.send(err);
-  });
+  })
 });
 
 // genre 리스트

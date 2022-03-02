@@ -1,21 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { genreList } from "../_actions/contentAction";
 
-function SelectGenre({ handleGenre }) {
-    const genre_options = [
-        { value: 'all', name: '전체' },
-        { value: '0', name: '애니메이션' },
-        { value: '1', name: '판타지' },
-        { value: '2', name: '코미디' },
-        { value: '3', name: '로맨스' },
-        { value: '4', name: '액션' },
-        { value: '5', name: '스릴러' }
-    ];
 
+function SelectGenre({ selectGenre }) {
+    const history = useHistory();
+    const [genreOptions, setGenreOptions] = useState([]);
+
+    useEffect(() => {
+        genreList().then(res => setGenreOptions(res));
+    }, []);
+
+    const handleGenre = (e) => {
+        history.push({
+            pathname: e.target.value === 'all' ? '/content/genre' : '/content/genre/' + e.target.value
+        });
+    };
+    
     return (
-        <select onChange={ handleGenre } value={ genre_options.value } >
-            { genre_options.map(genre => 
-                <option key={ genre.value } value={ genre.value } defaultValue={ genre.value }>
-                    { genre.name }
+        <select onChange={ handleGenre } value={ selectGenre !== undefined ? selectGenre : 'all' } >
+            <option value="all">전체</option>
+            { genreOptions.map(genre => 
+                <option key={ genre.genreID } value={ genre.genreID }>
+                    { genre.genreType }
                 </option>
             )}
         </select>

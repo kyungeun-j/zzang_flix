@@ -78,6 +78,7 @@ body {
         <PublicRoute restricted={true} path="/regform" component={ RegisterForm } user={ user } />
         <PrivateRoute path="/content" component={ Content } user={ user } exact />
         <PrivateRoute path="/content/:subMenu" component={ ContentGenre } user={ user } exact />
+        <PrivateRoute path="/content/:subMenu/:genreID" component={ ContentGenre } user={ user } exact />
       </Switch>
     </>
   );

@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+const ContentImg = styled.img`
+    width: 16rem;
+    margin-right: 6px;
+    border-radius: 3px;
+`;
 
 function ContentListItem({ content }) {
     const { img, title } = content;
 
     return (
         <>
-            <div>
-                <img src={ img } alt={ title } />
-                <h1>{ title }</h1>
-            </div>
+            <ContentImg src={ img } alt={ title } />
         </>
     );
 }

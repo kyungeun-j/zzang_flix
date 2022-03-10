@@ -1,29 +1,70 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import ContentListItem from "./ContentListItem";
 import SelectGenre from "./SelectGenre";
+import GenreInfo from "./GenreInfo";
 import styled from "styled-components";
-import { contentList } from "../_actions/contentAction";
+import { contentList, genreList } from "../_actions/contentAction";
+import TopContent from "./TopContent";
 
+const SelectGenreContainer = styled.section`
+    margin: 1rem 4rem 0;
+    display: flex;
+    align-items: center;
+    color: white;
+`;
 const ContentList = styled.div`
-  color: white;
+    color: white;
+    margin: 3rem 4rem;
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 function ContentGenre({ match }) {
     const [contents, setContents] = useState([]);
-    const [genre, setGenre] = useState(match.params.genreID);
+    const [genreID, setGenreID] = useState(match.params.genreID);
+    const [genreType, setGenreType] = useState();
+    const [genreOptions, setGenreOptions] = useState([]);
+    const [randomContent, setRandomContent] = useState();
 
     useEffect(() => {
-        setGenre(match.params.genreID);
+        genreList().then(res => setGenreOptions(res));
+    }, []);
+
+    useEffect(() => {
+        setGenreID(match.params.genreID);
     }, [match]);
-
+    
     useEffect(() => {
-        contentList({ genreID: genre }).then(res => setContents(res));
-    }, [genre]);
+        contentList({ genreID: genreID }).then(res => {
+            setContents(res)
+            setRandomContent(res[Math.floor(Math.random() * res.length)])
+        });
+    
+        if (genreOptions.length !== 0) {
+            if (genreID === undefined) {
+                setGenreType();
+            } else {
+                setGenreType(genreOptions[genreID]['genreType']);
+            }
+        }
+    }, [genreID, genreOptions]);
 
     return (
         <>
-            <SelectGenre selectGenre={genre} />
+            {
+                randomContent !== undefined ?
+                <TopContent randomContent={ randomContent } /> : <></>
+            }
+            <SelectGenreContainer>
+                <GenreInfo selectGenreType={ genreType } />
+                {
+                    genreType === undefined ?
+                    <SelectGenre selectGenre={ genreID } genreOptions={ genreOptions } /> : <></>
+                }
+            </SelectGenreContainer>
             <ContentList>
                 {
                     contents.map(content => (

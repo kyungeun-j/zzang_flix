@@ -5,20 +5,16 @@ import ContentListItem from './ContentListItem';
 import { useDispatch } from "react-redux";
 import { contentList, genreList } from '../_actions/contentAction';
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from 'react-icons/md';
+import TopContent from "./TopContent";
 
 const ContentList = styled.div`
   color: white;
+  margin-top: calc(1152 / 2048 * 73%);
 `;
 const GenreContainer = styled.div`    
   margin: 3rem 4rem;
-  overflow: hidden;
   position: relative;
-
-  &:hover {
-    .slideIcon {
-      display: none;
-    }
-  }
+  overflow: hidden;
 
   h3 {
     font-size: 1.3rem;
@@ -26,7 +22,6 @@ const GenreContainer = styled.div`
   }
 
   .slideIcon {
-    display: none;
     transform: scale(2.5);
     position: absolute;
     top: 50%;
@@ -59,13 +54,16 @@ function Content() {
   const [genre, setGenre] = useState([]);
   const [moveWidth, setMoveWidth] = useState({});
   const [slideVisible, setSlideVisible] = useState({});
-  const dispatch = useDispatch();
+  const [randomContent, setRandomContent] = useState();
 
   useEffect(() => {
-    contentList().then(res => setContents(res));
+    contentList().then(res => {
+      setContents(res)
+      setRandomContent(res[Math.floor(Math.random() * res.length)])
+    });
     genreList().then(res => setGenre(res));
   }, []);
-
+  
   const preSlideHandler = (e) => {
     const genre = e.target.tagName === 'path' ?
                     e.currentTarget.parentElement.children[0].innerText : e.target.parentElement.children[0].innerText;
@@ -81,6 +79,13 @@ function Content() {
       ...moveWidth,
       [genre]: translateX
     });
+
+    if (translateX == 0) {
+      setSlideVisible({
+        ...slideVisible,
+        [genre]: 1
+      })
+    }
   }
 
   const nextSlideHandler = (e) => {
@@ -118,6 +123,12 @@ function Content() {
   }
 
   return (
+    <>
+    {
+      randomContent !== undefined ?
+      <TopContent randomContent={ randomContent } /> : <></>
+    }
+    
     <ContentList>
       {
         genre.map(g => (
@@ -129,6 +140,7 @@ function Content() {
             <MdOutlineArrowForwardIos className="slideIcon" 
               style={{ display: slideVisible[g.genreType] === undefined || slideVisible[g.genreType] === 1 ? 'block' : 'none' }} 
               onClick={ nextSlideHandler } />
+
             <GenreList>
             {
               contents.filter(c => c.genreID === g.genreID).map(cg => (
@@ -140,6 +152,7 @@ function Content() {
         ))
       }
     </ContentList>
+    </>
   );
 }
 

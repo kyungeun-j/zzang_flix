@@ -11,6 +11,7 @@ const LoginSection = styled.section`
     justify-content: center;
     align-items: center;
     width: 100vw;
+    height: 100vh;
 `;
 const LoginContainer = styled.div`
     margin: 1rem;
@@ -148,7 +149,6 @@ function Login() {
     };
 
     const onLoginHandler = (e) => {
-        console.log(e.currentTarget)
         if (e.currentTarget.children[0].children[1].type === 'text') {
             setEmailSelect(true);
         } else if (e.currentTarget.children[0].children[1].type === 'password') {

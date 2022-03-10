@@ -20,7 +20,6 @@ def makeJSON():
         html = driver.page_source
         soup = bs(html, 'html.parser')
         mvUl = soup.select_one('.nm-content-horizontal-row-item-container')
-
         genre_datas = {}
         for idx2, data in enumerate(mvUl):
             if data.find("img")['src'].find('https') != -1:
@@ -36,7 +35,11 @@ def makeJSON():
                     driver.get(url)
                     html = driver.page_source
                     soup = bs(html, 'html.parser')
-
+                    
+                    bgImgs = soup.select('.hero-image')
+                    mv_detail['desktopBgImg'] = str(bgImgs[0]['style']).split(';')[1].split('"')[1]
+                    mv_detail['mobileBgImg'] = str(bgImgs[1]['style']).split(';')[1].split('"')[1]
+                    mv_detail['logoImg'] = soup.select_one('.logo-container > img')['src']
                     mv_detail['title'] = soup.select_one('.title-title').text
                     mv_detail['year'] = soup.select_one('.item-year').text
                     mv_detail['age'] = soup.select_one('.maturity-number').text

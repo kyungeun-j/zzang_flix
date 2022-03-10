@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { genreList } from "../_actions/contentAction";
+import styled from "styled-components";
 
+const SelectDiv = styled.select`
+    margin-left: 1rem;
+`;
 
-function SelectGenre({ selectGenre }) {
+function SelectGenre({ selectGenre, genreOptions }) {
     const history = useHistory();
-    const [genreOptions, setGenreOptions] = useState([]);
-
-    useEffect(() => {
-        genreList().then(res => setGenreOptions(res));
-    }, []);
 
     const handleGenre = (e) => {
         history.push({
@@ -18,14 +16,16 @@ function SelectGenre({ selectGenre }) {
     };
     
     return (
-        <select onChange={ handleGenre } value={ selectGenre !== undefined ? selectGenre : 'all' } >
-            <option value="all">전체</option>
-            { genreOptions.map(genre => 
-                <option key={ genre.genreID } value={ genre.genreID }>
-                    { genre.genreType }
-                </option>
-            )}
-        </select>
+        <>
+                <SelectDiv onChange={ handleGenre } value={ selectGenre !== undefined ? selectGenre : 'all' } >
+                    <option value="all">전체</option>
+                    { genreOptions.map(genre => 
+                        <option key={ genre.genreID } value={ genre.genreID }>
+                            { genre.genreType }
+                        </option>
+                    )}
+                </SelectDiv>
+        </>
     );
 }
 

@@ -8,6 +8,10 @@ import { logoutUser } from '../_actions/userAction';
 import { AiFillCaretDown } from "react-icons/ai";
 
 const Nav = styled.nav`
+    position: fixed;
+    top: 0;
+    width: -webkit-fill-available;
+    z-index: 3;
     list-style: none;
     display: flex;
     justify-content: space-between;

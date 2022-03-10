@@ -23,8 +23,9 @@ const persisted = persistReducer(persistConfig, reducer);
 
 const store = createStore(persisted, compose(
   applyMiddleware(promiseMiddlerware,reduxThunk),
+  window.navigator.userAgent.includes('Chrome') ?
   window.__REDUX_DEVTOOLS_EXTENSION__ && 
-  window.__REDUX_DEVTOOLS_EXTENSION__() 
+  window.__REDUX_DEVTOOLS_EXTENSION__() : compose
 ));
 
 const persistor = persistStore(store);

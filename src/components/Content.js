@@ -9,10 +9,10 @@ import TopContent from "./TopContent";
 
 const ContentList = styled.div`
   color: white;
-  margin-top: calc(1152 / 2048 * 73%);
+  margin-top: calc(1152 / 2048 * 77%);
 `;
 const GenreContainer = styled.div`    
-  margin: 3rem 4rem;
+  margin: 3vw 4vw;
   position: relative;
   overflow: hidden;
 

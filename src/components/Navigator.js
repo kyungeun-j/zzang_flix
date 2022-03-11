@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
@@ -24,58 +24,6 @@ const Nav = styled.nav`
         text-decoration: none;
     }
 
-    ${(props) =>
-        props.location == '/' &&
-        css`
-            padding: 11px 39px;
-        `
-        ||
-        props.location == '/login' &&
-        css`
-            padding: 3px 23px;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0));
-
-            .login_outBtn {
-                display: none;
-            }
-        `
-        ||
-        props.location == '/regform' &&
-        css`
-            padding: 2px 20px;
-            border-bottom: 1px solid #e6e6e6;
-        `
-        ||
-        props.location != '/login' && props.location != '/' &&
-        css`
-        padding: 11px 27px;
-        `
-    }
-
-    .logoImg {
-        ${(props) =>
-            props.location == '/' &&
-            css`
-                width: 10.5rem;
-            `
-            ||
-            props.location == '/login' &&
-            css`
-                width: 13rem;
-            `
-            ||
-            props.location == '/regform' &&
-            css`
-                width: 13.5rem;
-            `
-            ||
-            props.location != '/login' && props.location != '/' &&
-            css`
-                width: 7.5rem;
-            `
-        }
-    }
-
     .logo_navBtns {
         display: flex;
         align-items: center;
@@ -92,6 +40,7 @@ const Nav = styled.nav`
     .login_outBtn {
         position: relative;
         margin-right: 13px;
+        cursor: pointer;
     }
 
     .login_outBtn a, button {
@@ -115,19 +64,17 @@ const Nav = styled.nav`
         }
     }
 `;
-
 const UserEmail = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
 `;
-
 const UserBtnList = styled.ul`
     list-style: none;
     display: none;
     position: absolute;
-    top: 37px;
+    top: 44px;
     right: -1px;
     color: white;
     background-color: #000000bf;
@@ -140,11 +87,11 @@ const UserBtnList = styled.ul`
     &::after {
         content: '';
         position: absolute;
-        top: -69%;
+        top: -78%;
         right: 10%;
         width: 0;
         height: 26px;
-        border: 0.4em solid transparent;
+        border: 0.55em solid transparent;
         border-bottom-color: var(--back-color);
         border-top: 0;
         margin: 0 7px;
@@ -164,6 +111,7 @@ function Navigator({ location, user }) {
     const cookies = new Cookies();
     const history = useHistory();
     const dispatch = useDispatch();
+    const [scrollY, setScrollY] = useState(0);
 
     const onLogout = (e) => {
         e.preventDefault();
@@ -174,12 +122,28 @@ function Navigator({ location, user }) {
         pathname: '/'
         })
     };
+
+    useState(() => {
+        window.addEventListener('scroll', () => {
+            setScrollY(window.scrollY);
+        });
+    }, []);
     
     return (
-        <Nav location={ location }>
+        <Nav style={
+            location === '/' ? {padding: '11px 39px'} : 
+            location === '/login' ? {padding: '3px 23px', background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0))'} :
+            location === '/regform' ? {padding: '2px 20px', borderBottom: '1px solid #e6e6e6' } :
+            {padding: '11px 27px', background: scrollY === 0 ? 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0))' : 'black'}
+        }>
             <ul className='logo_navBtns'>
                 <Link to={ user.isLogin ? '/content' : '/' }>
-                    <img src={ logo } alt='logo' className='logoImg' />
+                    <img src={ logo } alt='logo' style={
+                        location === '/' ? {width: '10.5rem'} : 
+                        location === '/login' ? {width: '13rem'} :
+                        location === '/regform' ? {width: '13.5rem'} :
+                        {width: '7.5rem'}
+                    } />
                 </Link>
 
                 { location.indexOf('/content') >= 0 ?
@@ -191,23 +155,26 @@ function Navigator({ location, user }) {
                     <></>
                 }
             </ul>
-            <li className='login_outBtn' >
-                {
-                user.isLogin ?
-                <>
-                    <UserEmail>
-                        {user.userEmail}
-                        <AiFillCaretDown className='listIcon' />
-                    </UserEmail>
-                    <UserBtnList>
-                        <li>계정</li>
-                        <li onClick={ onLogout }>짱플릭스에서 로그아웃</li>
-                    </UserBtnList>
-                </>
-                :
-                <Link to={'/login'}>로그인</Link>
-                }
-            </li>
+            {
+                location === '/login' ? <></> :
+                <li className='login_outBtn' >
+                    {
+                    user.isLogin ?
+                    <>
+                        <UserEmail>
+                            {user.userEmail}
+                            <AiFillCaretDown className='listIcon' />
+                        </UserEmail>
+                        <UserBtnList>
+                            <li>계정</li>
+                            <li onClick={ onLogout }>짱플릭스에서 로그아웃</li>
+                        </UserBtnList>
+                    </>
+                    :
+                    <Link to={'/login'}>로그인</Link>
+                    }
+                </li>
+            }
         </Nav>
     )
 

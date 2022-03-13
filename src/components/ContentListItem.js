@@ -1,64 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ContentDetailModal from './ContentDetailModal';
 
-const ContentDiv = styled.div`
-    width: 16rem;
-    height: 9rem;
-    margin: 6px;
+const ContentImg = styled.img`
+    width: inherit;
+    height: inherit;
+`;
+const ContentInfo = styled.section`
+    display: none;
+    width: inherit;
+    background: #202020;
     border-radius: 3px;
+    overflow: hidden;
+    padding-bottom: 5vh;
+    z-index: 1;
 
     div {
-        display: none;
-        height: 1rem;
-        position: relative;
-        padding: 9px;
-        background: #1f1f1f;
-    }
-
-    span {
-        font-size: 1px;
-        border: 0.1px solid gray;
-        padding: 2px 8px;
-        position: absolute;
-        top: 6px;
-        text-align: center;
+        display: flex;
+        margin: 0 2vh;
+        justify-content: space-between;
     }
 `;
-const ContentImg = styled.img`
-    width: 18rem;
-    height: intrinsic;
+const ContentDiv = styled.div`
+    background: #202020;
+    width: 18vw;
+    height: 10vw;
     border-radius: 3px;
     margin: 2.5px;
+    overflow-y: clip;
+
+    transition: all .3s linear .3s;
+
+    &:hover {
+        height: auto;
+        transform: scale(1.5);
+        margin-left: calc(18vw - calc(18vw * 1.5 / 2));
+
+        ${ContentInfo} {
+            display: block;
+        }
+    }
 `;
 
+
 function ContentListItem({ content }) {
-    const { img, title, age } = content;
+    const { bgImgDeskTop, bgImgMobile, img, title, age, duration } = content;
+    const [detailOpen, setDetailOpen] = useState(false);
 
-    // const onMouseOver = (e) => {
-    //     e.currentTarget.children[1].style.display = 'block'
-    //     e.currentTarget.sty
-    //     // e.currentTarget.style.transform = 'scale(1.3)'
-    //     // e.currentTarget.children[0].style.borderRadius = '3px 3px 0 0'
-    //     e.currentTarget.style.zIndex = '2'
-    //     console.log(e.currentTarget)
-    //     console.log(e.target)
-    // };
-
-    // const onMouseLeave = (e) => {
-    //     e.currentTarget.children[1].style.display = 'none'
-    //     // e.currentTarget.style.transform = 'scale(1)'
-    //     e.currentTarget.style.zIndex = '0'
-    // };
+    const detailHandler = () => {
+        setDetailOpen(true);
+    }
 
     return (
         <>
-            {/* <ContentDiv onMouseOver={ onMouseOver } onMouseLeave={ onMouseLeave } > */}
-                <ContentImg src={ img } alt={ title } />
-                {/* <div> */}
-                    {/* <p><span>{ age }</span></p> */}
-                {/* </div> */}
-            {/* </ContentDiv> */}
+            <ContentDiv>
+                <ContentImg src={ img } alt={ title } /> 
+                <ContentInfo>
+                        <div>
+                            <span>{ title }</span>
+                            <span onClick={ detailHandler }>버튼</span>
+                        </div>
+                        <div>
+                            <span>{ age }</span>
+                            <span>{ duration }</span>
+                        </div>
+                    </ContentInfo>
+            </ContentDiv>
+            {
+                detailOpen && <ContentDetailModal visible={detailOpen} />
+            }
         </>
     );
 }

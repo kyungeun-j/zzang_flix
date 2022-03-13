@@ -14,7 +14,8 @@ const SelectGenreContainer = styled.section`
 `;
 const ContentList = styled.div`
     color: white;
-    margin: 3rem 4rem;
+    // margin: 3rem 4rem;
+    margin: calc(1152 / 2048 * 77%) 4vw 3vw;
     color: white;
     display: flex;
     flex-wrap: wrap;

@@ -14,7 +14,19 @@ const ContentList = styled.div`
 const GenreContainer = styled.div`    
   margin: 3vw 4vw;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
+
+  &:hover {
+    .slideIcon:nth-child(2) {
+      left: -4vw;
+      display: ${props => props.genreTypeProps < 0 ? 'block' : 'none'};
+    }
+  
+    .slideIcon:nth-child(3) {
+      right: calc(-4vw + 1px);
+      display: ${props => props.slideVisibleProps === undefined || props.slideVisibleProps === 1 ? 'block' : 'none'};
+    }
+  }
 
   h3 {
     font-size: 1.3rem;
@@ -22,31 +34,21 @@ const GenreContainer = styled.div`
   }
 
   .slideIcon {
-    transform: scale(2.5);
+    display: none;
+    width: 2.5vw;
+    height: 10vw;
     position: absolute;
-    top: 50%;
     z-index: 1;
-  }
-
-  .slideIcon:nth-child(2) {
-      left: 16px;
-  }
-
-  .slideIcon:nth-child(3) {
-    right: 16px;
+    margin: 0 0.7vw;
   }
 
   svg:hover {
     cursor: pointer;
-    transform: scale(3.5);
+    transform: scale(1.5);
   }
 `;
 const GenreList = styled.div`
   display: flex;
-
-  &::hover {
-
-  }
 `;
 
 function Content() {
@@ -107,7 +109,7 @@ function Content() {
                     e.currentTarget.parentElement.children[3] : e.target.parentElement.children[3]; // GenreListEle
     const nowImgCount = Math.floor(target.offsetWidth / (target.children[0].offsetWidth + 6));
     const translateX = moveWidth[genre] !== undefined ? moveWidth[genre] + (nowImgCount * (target.children[0].offsetWidth + 6) * -1) : nowImgCount * (target.children[0].offsetWidth + 6) * -1;
-    
+    console.log(target)
     target.style.transform = 'translateX('+translateX+'px)';
     setMoveWidth({
       ...moveWidth,
@@ -132,14 +134,10 @@ function Content() {
     <ContentList>
       {
         genre.map(g => (
-          <GenreContainer key={ g.genreID }>
+          <GenreContainer key={ g.genreID } genreTypeProps={moveWidth[g.genreType]} slideVisibleProps={slideVisible[g.genreType]} >
             <h3>{ g.genreType }</h3>
-            <MdOutlineArrowBackIos className="slideIcon" 
-              style={{ display : moveWidth[g.genreType] < 0 ? 'block' : 'none'}}
-              onClick={ preSlideHandler } />
-            <MdOutlineArrowForwardIos className="slideIcon" 
-              style={{ display: slideVisible[g.genreType] === undefined || slideVisible[g.genreType] === 1 ? 'block' : 'none' }} 
-              onClick={ nextSlideHandler } />
+            <MdOutlineArrowBackIos className="slideIcon" onClick={ preSlideHandler } />
+            <MdOutlineArrowForwardIos className="slideIcon" onClick={ nextSlideHandler } />
 
             <GenreList>
             {

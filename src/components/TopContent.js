@@ -23,23 +23,29 @@ const BgInfo = styled.section`
     color: white;
     margin-left: 4vw;
     width: 40vw;
-    height: calc(1152 / 2048 * 100%);
-    // margin-top: calc(1152 / 2048 * 20%);
-    margin-top: calc(1152 / 2048 * 14%);
+    // height: calc(calc(1152 / 2048 * 100%) - calc(1152 / 2048 * 13%));
+    // margin-top: calc(1152 / 2048 * 13%);
+    // height: calc(calc(1152 / 2048 * 100%) - calc(1152 / 2048 * 23%));
+    // margin-top: calc(1152 / 2048 * 23%);
+    height: calc(calc(1152 / 2048 * 100%) - calc(1152 / 2048 * 17%));
+    margin-top: calc(1152 / 2048 * 17%);
     display: flex;
     flex-direction: column;
     justify-content: start;
     
     img {
-        width: 100%;
-        margin-bottom: 1.3rem;
+        width: inherit;
+        margin-bottom: 2vw;
     }
 
     .contentInfo {
         font-size: 1.5vw;
         font-weight: 400;
         word-break: keep-all;
-        margin-bottom: 1.3rem;
+        // margin-bottom: 1vh;
+        // line-height: 1.1;
+        margin-bottom: 2vw;
+        line-height: 1.3;
     }
 
     .infoBtn {
@@ -48,10 +54,10 @@ const BgInfo = styled.section`
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 1.2vw;
+        font-size: 1.3vw;
         font-weight: bold;
-        padding: 0.4vw 1.6vw;
-        border-radius: 3px;
+        padding: 0.6vw 1.6vw;
+        border-radius: 5px;
 
         .icon {
             font-size: 2vw;

@@ -17,13 +17,11 @@ const GenreContainer = styled.div`
       left: 0;
       display: ${props => props.genreTypeProps < 0 ? 'block' : 'none'};
     }
-
     .slideIcon:nth-child(3) {
       right: 0;
       display: ${props => props.slideVisibleProps === undefined || props.slideVisibleProps === 1 ? 'block' : 'none'};
     }
   }
-
   .slideIcon {
     display: none;
     padding: 0 0.5vw;
@@ -33,23 +31,15 @@ const GenreContainer = styled.div`
     z-index: 10;
     background: #0000003d;
   }
-
   .slideIcon:hover {
     cursor: pointer;
     transform: scale(1.1);
     z-index: 10;
     background: #00000094;
   }
-
   h3 {
     font-size: 1.3rem;
     margin-left: 4vw;
-  }
-
-  @media (max-width: 900px) {
-    .slideIcon {
-      height: ${props => props.imgWidth * .5 / 126 * 71}px;
-    }
   }
 `;
 const GenreContentContainer = styled.div`    
@@ -71,7 +61,6 @@ const ContentList2 = styled.div`
 `;
 
 function Content({ match }) {
-
   const [contents, setContents] = useState([]);
   const [genre, setGenre] = useState([]);
   const [genreID, setGenreID] = useState(match.params.genreID);
@@ -80,7 +69,6 @@ function Content({ match }) {
   const [randomContent, setRandomContent] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState();
-
   const [imgWidth, setImgWidth] = useState(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 225)))
   const [imgCount, setImgCount] = useState(Math.round((window.innerWidth - window.innerWidth * 0.08) / 225));
 
@@ -92,8 +80,13 @@ function Content({ match }) {
 
   // width resize 
   const resizeHandler = () => {
-    setImgWidth(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 225)))
-    setImgCount(Math.round((window.innerWidth - window.innerWidth * 0.08) / 225))
+    window.innerWidth > 900 ?
+    setImgWidth(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 225))) :
+    setImgWidth(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 155)));
+    
+    window.innerWidth > 900 ?
+    setImgCount(Math.round((window.innerWidth - window.innerWidth * 0.08) / 225)):
+    setImgCount(Math.round((window.innerWidth - window.innerWidth * 0.08) / 155));
   };
 
   useEffect(() => {
@@ -114,8 +107,6 @@ function Content({ match }) {
     genreList().then(res => setGenre(res));
   }, [genreID]);
   
-
-  //
   useEffect(() => {
     console.log(imgCount)
     Object.values(genre).map(gItem => {
@@ -123,7 +114,6 @@ function Content({ match }) {
     })
   }, [imgCount, genre]);
 
-  console.log(slideVisible)
   const preSlideHandler = (e) => {
     const genre = e.target.tagName === 'path' ?
                     e.currentTarget.parentElement.children[0].innerText : e.target.parentElement.children[0].innerText;
@@ -159,11 +149,6 @@ function Content({ match }) {
       [genre]: 0
     });
 
-    setSlideVisible({
-      ...slideVisible,
-      [genre]: 1
-    })
-
     const target = e.target.tagName === 'path' ?
                     e.currentTarget.parentElement.children[3].children[0] : e.target.parentElement.children[3].children[0]; // GenreListEle
     const nowImgCount = Math.floor((window.innerWidth - (3 * window.innerWidth / 100)) / (target.children[0].offsetWidth + 6));
@@ -175,12 +160,10 @@ function Content({ match }) {
       [genre]: translateX
     });
     
-    
       setSlideVisible({
         ...slideVisible,
         [genre]: (6 - nowImgCount < nowImgCount) ? 0 : 1
-      })
-    
+      }); 
   };
 
   return (
@@ -220,11 +203,11 @@ function Content({ match }) {
       </ContentList> :
       // 장르별
       <ContentList2>
-          {
-              contents.map(content => (
-                  <ContentListItem key={ content.id } content={ content } modalHandler={ modalHandler } imgWidth={ imgWidth } />
-              ))
-          }
+      {
+        contents.map(content => (
+            <ContentListItem key={ content.id } content={ content } modalHandler={ modalHandler } imgWidth={ imgWidth } />
+        ))
+      }
       </ContentList2>
     }
     </>

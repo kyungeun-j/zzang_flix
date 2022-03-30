@@ -1,75 +1,136 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import ContentDetailModal from './ContentDetailModal';
+import { FaChevronDown } from "react-icons/fa";
 
 const ContentImg = styled.img`
     width: inherit;
     height: inherit;
+    border-radius: 3px;
 `;
 const ContentInfo = styled.section`
     display: none;
-    width: inherit;
+    width: 220px;
+    height: 130px;
+    position: absolute;
+    top: 0;
+    left:0;
+    right:0;
     background: #202020;
     border-radius: 3px;
     overflow: hidden;
-    padding-bottom: 5vh;
     z-index: 1;
+    flex-direction: column;
+    transition: all ease .5s 0s;
 
-    div {
+    &:hover {
+        width: 325px;
+        height: 300px;
+        top: -50%;
+        z-index: 10;
+        left: ${props => props.hoverLeft}%;
+    }
+
+    img {
+        width: inherit;
+    }
+
+    section {
+        height: calc(1152 / 2048 * 100%);
+        margin: 1rem;
         display: flex;
-        margin: 0 2vh;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    div:nth-child(1) {
+        font-size: 19px;
+        display: flex;
         justify-content: space-between;
+        align-items: center;
+    }
+
+    div:nth-child(2) {
+        font-size: 11px;
+    }
+
+    .ageEle {
+        border: 0.1px solid;
+        padding: 1px 6px;
+        margin-right: 10px;
+    }
+
+    svg {
+        font-size: 16px;
+        padding: 8px;
+        border: 2px solid gray;
+        border-radius: 2rem;
+    }
+
+    svg:hover {
+        border: 2px solid white;
+        cursor: pointer;
     }
 `;
 const ContentDiv = styled.div`
+    position: relative;
     background: #202020;
-    width: 18vw;
-    height: 10vw;
+    width: ${props => props.imgWidth}px;
     border-radius: 3px;
     margin: 2.5px;
-    overflow-y: clip;
-
-    transition: all .3s linear .3s;
 
     &:hover {
-        height: auto;
-        transform: scale(1.5);
-        margin-left: calc(18vw - calc(18vw * 1.5 / 2));
-
         ${ContentInfo} {
-            display: block;
+            display: flex;
         }
+    }
+
+    @media (max-width: 900px) {
+        width: ${props => props.imgWidth * .5}px;
     }
 `;
 
 
-function ContentListItem({ content }) {
-    const { bgImgDeskTop, bgImgMobile, img, title, age, duration } = content;
-    const [detailOpen, setDetailOpen] = useState(false);
-
-    const detailHandler = () => {
-        setDetailOpen(true);
+function ContentListItem({ content, modalHandler, imgWidth }) {
+    const { bgImgDeskTop, img, title, age, duration, id } = content;
+    const [hoverCenter, setHoverCenter] = useState(0);
+    
+    const mouseOver = (e) => {
+        const parentEleLeft = e.currentTarget.getBoundingClientRect().left - e.currentTarget.parentElement.children[0].getBoundingClientRect().left;
+        const targetWidth = e.currentTarget.getBoundingClientRect().right - e.currentTarget.getBoundingClientRect().left;
+        const visibleImgCount = Math.floor(window.innerWidth / targetWidth);
+        if (parentEleLeft == 0) {
+            setHoverCenter(0);
+        } else if (parentEleLeft > targetWidth * (visibleImgCount - 1)) {
+            setHoverCenter(-53);
+        } else {
+            setHoverCenter(-25);
+        }
     }
 
     return (
         <>
-            <ContentDiv>
+            <ContentDiv onMouseOver={ mouseOver } imgWidth={imgWidth}>
                 <ContentImg src={ img } alt={ title } /> 
-                <ContentInfo>
-                        <div>
-                            <span>{ title }</span>
-                            <span onClick={ detailHandler }>버튼</span>
-                        </div>
-                        <div>
-                            <span>{ age }</span>
-                            <span>{ duration }</span>
-                        </div>
+                <ContentInfo hoverLeft={ hoverCenter }>
+                        <img src={ bgImgDeskTop } />
+                        <section>
+                            <div>
+                                <span>{ title }</span>
+                                <span onClick={ (e) => { 
+                                        modalHandler(true, content);
+                                        e.currentTarget.parentElement.parentElement.parentElement.style.display = 'none';
+                                }}>
+                                    <FaChevronDown />
+                                </span>
+                            </div>
+                            <div>
+                                <span className='ageEle'>{ age }</span>
+                                <span className='durationEle'>{ duration }</span>
+                            </div>
+                        </section>
                     </ContentInfo>
             </ContentDiv>
-            {
-                detailOpen && <ContentDetailModal visible={detailOpen} />
-            }
         </>
     );
 }

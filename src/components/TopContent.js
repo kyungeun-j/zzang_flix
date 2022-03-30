@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import ContentDetailModal from './ContentDetailModal';
 
 const TopContentContainer = styled.section`
     position: absolute;
@@ -23,12 +24,7 @@ const BgInfo = styled.section`
     color: white;
     margin-left: 4vw;
     width: 40vw;
-    // height: calc(calc(1152 / 2048 * 100%) - calc(1152 / 2048 * 13%));
-    // margin-top: calc(1152 / 2048 * 13%);
-    // height: calc(calc(1152 / 2048 * 100%) - calc(1152 / 2048 * 23%));
-    // margin-top: calc(1152 / 2048 * 23%);
-    height: calc(calc(1152 / 2048 * 100%) - calc(1152 / 2048 * 17%));
-    margin-top: calc(1152 / 2048 * 17%);
+    margin-top: 9%;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -42,8 +38,6 @@ const BgInfo = styled.section`
         font-size: 1.5vw;
         font-weight: 400;
         word-break: keep-all;
-        // margin-bottom: 1vh;
-        // line-height: 1.1;
         margin-bottom: 2vw;
         line-height: 1.3;
     }
@@ -78,24 +72,31 @@ const BgInfo = styled.section`
             font-weight: 400;
         }
     }
+
+    .infoBtn:hover {
+        cursor: pointer;
+        background: #6d6d6e8f;
+        // border: 1.5px solid;
+    }
 `;
 
-function TopContent({ randomContent }) {
+function TopContent({ randomContent, modalVisible, modalHandler }) {
     return (
-        <TopContentContainer>
-            <BgImg style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0) 73%, rgba(0, 0, 0, 1)), linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.45)), url('+randomContent.bgImgDeskTop+')'}}></BgImg>
-            <BgInfo>
-                <img src={ randomContent.logoImg } />
-                <p className='contentInfo'>{ randomContent.info }</p>
-                <p className='infoBtn'>
-                    <AiOutlineInfoCircle className='icon' />
-                    <span>상세 정보</span>
+        <>
+            <TopContentContainer>
+                <BgImg style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0) 73%, rgba(0, 0, 0, 1)), linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.45)), url('+randomContent.bgImgDeskTop+')'}}></BgImg>
+                <BgInfo>
+                    <img src={ randomContent.logoImg } />
+                    <p className='contentInfo'>{ randomContent.info }</p>
+                    <p className='infoBtn'>
+                        <AiOutlineInfoCircle className='icon' />
+                        <span onClick={ () => { modalHandler(true, randomContent)} }>상세 정보</span>
 
-                    <span className='contentAge'>{ randomContent.age }</span>
-                </p>
-            </BgInfo>
-            
-        </TopContentContainer>
+                        <span className='contentAge'>{ randomContent.age }</span>
+                    </p>
+                </BgInfo>
+            </TopContentContainer>
+        </>
     );
 }
 

@@ -1,10 +1,10 @@
-import { GENRE_LIST } from './types';
 import axios from 'axios';
 
 const CONTENT_URL = '/api/content';
 
 // content 리스트
 export async function contentList(genreID) {
+    console.log(genreID)
     return await axios.post(CONTENT_URL+'/contentList', genreID).then(res => res.data);
 }
 

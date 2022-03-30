@@ -30,11 +30,9 @@ const ContentInfo = styled.section`
         z-index: 10;
         left: ${props => props.hoverLeft}%;
     }
-
     img {
         width: inherit;
     }
-
     section {
         height: calc(1152 / 2048 * 100%);
         margin: 1rem;
@@ -42,31 +40,26 @@ const ContentInfo = styled.section`
         flex-direction: column;
         justify-content: space-evenly;
     }
-
     div:nth-child(1) {
         font-size: 19px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
     div:nth-child(2) {
         font-size: 11px;
     }
-
     .ageEle {
         border: 0.1px solid;
         padding: 1px 6px;
         margin-right: 10px;
     }
-
     svg {
         font-size: 16px;
         padding: 8px;
         border: 2px solid gray;
         border-radius: 2rem;
     }
-
     svg:hover {
         border: 2px solid white;
         cursor: pointer;
@@ -84,12 +77,7 @@ const ContentDiv = styled.div`
             display: flex;
         }
     }
-
-    @media (max-width: 900px) {
-        width: ${props => props.imgWidth * .5}px;
-    }
 `;
-
 
 function ContentListItem({ content, modalHandler, imgWidth }) {
     const { bgImgDeskTop, img, title, age, duration, id } = content;
@@ -109,32 +97,29 @@ function ContentListItem({ content, modalHandler, imgWidth }) {
     }
 
     return (
-        <>
-            <ContentDiv onMouseOver={ mouseOver } imgWidth={imgWidth}>
-                <ContentImg src={ img } alt={ title } /> 
-                <ContentInfo hoverLeft={ hoverCenter }>
-                        <img src={ bgImgDeskTop } />
-                        <section>
-                            <div>
-                                <span>{ title }</span>
-                                <span onClick={ (e) => { 
-                                        modalHandler(true, content);
-                                        e.currentTarget.parentElement.parentElement.parentElement.style.display = 'none';
-                                }}>
-                                    <FaChevronDown />
-                                </span>
-                            </div>
-                            <div>
-                                <span className='ageEle'>{ age }</span>
-                                <span className='durationEle'>{ duration }</span>
-                            </div>
-                        </section>
-                    </ContentInfo>
-            </ContentDiv>
-        </>
+        <ContentDiv onMouseOver={ mouseOver } imgWidth={imgWidth}>
+            <ContentImg src={ img } alt={ title } /> 
+            <ContentInfo hoverLeft={ hoverCenter }>
+                    <img src={ bgImgDeskTop } />
+                    <section>
+                        <div>
+                            <span>{ title }</span>
+                            <span onClick={ (e) => { 
+                                    modalHandler(true, content);
+                                    e.currentTarget.parentElement.parentElement.parentElement.style.display = 'none';
+                            }}>
+                                <FaChevronDown />
+                            </span>
+                        </div>
+                        <div>
+                            <span className='ageEle'>{ age }</span>
+                            <span className='durationEle'>{ duration }</span>
+                        </div>
+                    </section>
+                </ContentInfo>
+        </ContentDiv>
     );
 }
-
 
 ContentListItem.propTypes = {
     id: PropTypes.string,

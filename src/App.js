@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, Switch } from 'react-router-dom';
@@ -20,12 +19,10 @@ const GlobalStyle = createGlobalStyle`
 html {
   font-size: 14px;
 }
-
 * {
   margin: 0;
   padding: 0;
 }
-
 body {
   ${({ location }) => 
     ( 
@@ -82,4 +79,5 @@ body {
     </>
   );
 }
+
 export default App;

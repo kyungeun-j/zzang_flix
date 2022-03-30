@@ -71,24 +71,31 @@ function Register() {
     };
 
     const onRegisterHandler = (e) => {
-        if (e.currentTarget.children[1].type === 'email') {
+        if (e.currentTarget.children[1].type === 'email') 
+        {
             setSelect(true);
         }
     };
 
     const onClick = (e) => {
         e.preventDefault();
-        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) {
+        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) 
+        {
             setSelect(true);
             setEmailError('이메일 주소를 입력하세요.');
-        } else {
+        } 
+        else 
+        {
             compareEmail({email}).then(res => {
-                if (res) {
+                if (res) 
+                {
                     history.push({
                         pathname: '/login',
                         state: { email }
                     });
-                } else {
+                } 
+                else 
+                {
                     history.push({
                         pathname: '/regform',
                         state: { email }

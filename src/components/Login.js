@@ -105,7 +105,6 @@ const RegisterLink = styled.div`
     & span {
         color: #737373;
     }
-
     .registerA {
         color: white;
         text-decoration: none;
@@ -158,33 +157,46 @@ function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) {
+        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) 
+        {
             setEmailError('정확한 이메일 주소나 전화번호를 입력하세요.');
             inputRef.current[0].parentElement.style.borderBottom = '2px solid #E87C03';
             inputRef.current[1].parentElement.style.borderBottom = '2px solid #333333';
-        } else if (password.length < 4 || password.length > 60) {
+        } 
+        else if (password.length < 4 || password.length > 60) 
+        {
             setPwError('비밀번호는 4 - 60자 사이여야 합니다.');
             inputRef.current[0].parentElement.style.borderBottom = '2px solid #333333';
             inputRef.current[1].parentElement.style.borderBottom = '2px solid #E87C03';
-        } else {
+        } 
+        else 
+        {
             if (emailError !== '' || pwError !== '') setEmailError(''); setPwError('');
 
             dispatch(loginUser({ email, password})).then(res => {
-                if (res.payload.result) {
+                if (res.payload.result) 
+                {
                     cookies.set('token', res.payload.token);
                     history.push({
                         pathname: '/content'
                     });
-                } else {
-                    if (res.payload.msg === 'email fail') {
+                } 
+                else 
+                {
+                    if (res.payload.msg === 'email fail') 
+                    {
                         setLoginError('죄송합니다. 이 이메일 주소를 사용하는 계정을 찾을 수 없습니다. 다시 시도하시거나 새로운 계정을 등록하세요.');
                         inputRef.current[0].parentElement.style.borderBottom = '2px solid #E87C03';
                         inputRef.current[1].parentElement.style.borderBottom = '2px solid #333333';
-                    } else if (res.payload.msg === 'password fail') {
+                    }
+                    else if (res.payload.msg === 'password fail') 
+                    {
                         setLoginError('비밀번호를 잘못 입력하셨습니다. 다시 입력하시거나 비밀번호를 재설정하세요.');
                         inputRef.current[0].parentElement.style.borderBottom = '2px solid #333333';
                         inputRef.current[1].parentElement.style.borderBottom = '2px solid #E87C03';
-                    } else {
+                    } 
+                    else 
+                    {
                         setLoginError('죄송합니다. 로그인을 할 수 없습니다.');
                     }
                 }

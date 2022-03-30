@@ -16,16 +16,14 @@ function SelectGenre({ selectGenre, genreOptions }) {
     };
     
     return (
-        <>
-                <SelectDiv onChange={ handleGenre } value={ selectGenre !== undefined ? selectGenre : 'all' } >
-                    <option value="all">전체</option>
-                    { genreOptions.map(genre => 
-                        <option key={ genre.genreID } value={ genre.genreID }>
-                            { genre.genreType }
-                        </option>
-                    )}
-                </SelectDiv>
-        </>
+        <SelectDiv onChange={ handleGenre } value={ selectGenre !== undefined ? selectGenre : 'all' } >
+            <option value="all">전체</option>
+            { genreOptions.map(genre => 
+                <option key={ genre.genreID } value={ genre.genreID }>
+                    { genre.genreType }
+                </option>
+            )}
+        </SelectDiv>
     );
 }
 

@@ -7,7 +7,6 @@ import logo from '../static/images/logo.png';
 import { logoutUser } from '../_actions/userAction';
 import { genreList } from "../_actions/contentAction";
 import { AiFillCaretDown } from "react-icons/ai";
-
 import SelectGenre from "./SelectGenre";
 import GenreInfo from "./GenreInfo";
 
@@ -27,17 +26,14 @@ const Nav = styled.nav`
     div {
         flex: 1 1 40%;
     }
-
     & a {
         color: white;
         text-decoration: none;
     }
-
     .logo_navBtns {
         display: flex;
         align-items: center;
     }
-
     .logo_navBtns ul {
         width: 115px;
         list-style: none;
@@ -45,17 +41,14 @@ const Nav = styled.nav`
         justify-content: space-around;
         font-size: 14px;
     }
-
     .login_outBtn {
         position: relative;
         margin-right: 13px;
         cursor: pointer;
     }
-
     .login_outBtn div {
         justify-content: end;
     }
-
     .login_outBtn a, button {
         padding: 9px 17px;
         margin-right: 18px;
@@ -107,11 +100,9 @@ const UserBtnList = styled.ul`
         margin: 0 7px;
         color: #ffffffcf;
     }
-
     ${ Nav } .login_outBtn:hover & {
         display: block;
     }
-
     & li {
         cursor: pointer;
     }
@@ -123,13 +114,12 @@ const SubNav = styled.div`
     color: white;
 `;
 
-
 function Navigator({ location, user }) {
     const cookies = new Cookies();
     const history = useHistory();
     const dispatch = useDispatch();
     const [scrollY, setScrollY] = useState(0);
-    
+
     // for content genre select
     const [genreID, setGenreID] = useState();
     const [genreType, setGenreType] = useState();
@@ -156,11 +146,15 @@ function Navigator({ location, user }) {
     }, []);
 
     useEffect(() => {
-        if (location.indexOf('/content/genre') >= 0) {
-            if (!isNaN(location.slice(-1)) && genreOptions.length !== 0) {
+        if (location.indexOf('/content/genre') >= 0) 
+        {
+            if (!isNaN(location.slice(-1)) && genreOptions.length !== 0) 
+            {
                 setGenreID(location.slice(-1));
                 setGenreType(genreOptions[location.slice(-1)]['genreType']);
-            } else {
+            } 
+            else 
+            {
                 setGenreID(undefined);
                 setGenreType();
             }
@@ -222,8 +216,7 @@ function Navigator({ location, user }) {
                 </SubNav>
             }
         </Nav>
-    )
-
+    );
 }
 
 export default Navigator;

@@ -27,13 +27,11 @@ const RegForm = styled.form`
         font-weight: 700;
         word-break: keep-all;
     }
-
     .subText {
         font-size: 18px;
         margin-top: 18px;
         margin-bottom: 8px;
     }
-
     .subText p {
         margin-top: 10px;
     }
@@ -118,44 +116,58 @@ function RegisterForm() {
     };
 
     const onRegisterHandler = (e) => {
-        if (e.currentTarget.children[0].children[1].type === 'text') {
+        if (e.currentTarget.children[0].children[1].type === 'text') 
+        {
             setEmailSelect(true);
-        } else if (e.currentTarget.children[0].children[1].type === 'password') {
+        } 
+        else if (e.currentTarget.children[0].children[1].type === 'password') 
+        {
             setPwSelect(true);
         } 
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) {
+        if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) 
+        {
             setEmailError('이메일 주소를 입력해 주세요.');
             inputRef.current[0].parentElement.style.border = '1px solid #b92d2b';
-        } else if (password.length < 4 || password.length > 60) {
+        } 
+        else if (password.length < 4 || password.length > 60) 
+        {
             setPwError('비밀번호를 입력해 주세요.');
             inputRef.current[1].parentElement.style.border = '1px solid #b92d2b';
-        } else {
+        } 
+        else 
+        {
             registerUser({ userID: null, email, password }).then(res => {
-                if (res.registerUser) {
+                if (res.registerUser) 
+                {
                     dispatch(loginUser({ email, password})).then(res => {
-                        if (res.payload.result) {
+                        if (res.payload.result) 
+                        {
                             cookies.set('token', res.payload.token);
                             history.push({
                                 pathname: '/content'
-                            })
-                        } else {
+                            });
+                        } 
+                        else 
+                        {
                             history.push({
                                 pathname: '/Register'
-                            })
+                            });
                         }
-                    })
-                } else {
-                    setRegisterInfo('죄송합니다. 회원가입을 할 수 없습니다.')
+                    });
+                } 
+                else 
+                {
+                    setRegisterInfo('죄송합니다. 회원가입을 할 수 없습니다.');
                 }
-            })
+            });
         }
     };
 
-    return(
+    return (
         <RegFormSection>
             <RegFormContainer>
             { registerInfo }
@@ -183,7 +195,7 @@ function RegisterForm() {
                 </RegForm>
             </RegFormContainer>
         </RegFormSection>
-    )
+    );
 }
 
 export default RegisterForm;

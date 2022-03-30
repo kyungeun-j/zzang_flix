@@ -31,6 +31,7 @@ const ModalInner = styled.div`
     outline: none;
     z-index: 10;
     padding: 3rem;
+
     .modalClose {
         position: absolute;
         top: 0;
@@ -99,7 +100,7 @@ function ContentDetailModal({ modalVisible, modalHandler, content }) {
                 </ModalInner>
             </ModalOverlay>
         </>
-    )
+    );
 }
 
 export default ContentDetailModal;

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, Switch } from 'react-router-dom';
 import Home from './components/Home';
@@ -11,7 +11,6 @@ import loginbackground from '../src/static/images/loginBackground.jpeg';
 import mainbackground from '../src/static/images/mainBackground.jpeg';
 import { createGlobalStyle, css } from 'styled-components';
 import Navigator from './components/Navigator';
-import ContentGenre from './components/ContentGenre';
 import Cookies from 'universal-cookie';
 import { loginCheck } from '../src/_actions/userAction';
 import PrivateRoute from './components/route_control/PrivateRoute';
@@ -77,8 +76,8 @@ body {
         <PublicRoute restricted={true} path="/register" exact={ true } component={ Register } user={ user } />
         <PublicRoute restricted={true} path="/regform" component={ RegisterForm } user={ user } />
         <PrivateRoute path="/content" component={ Content } user={ user } exact />
-        <PrivateRoute path="/content/:subMenu" component={ ContentGenre } user={ user } exact />
-        <PrivateRoute path="/content/:subMenu/:genreID" component={ ContentGenre } user={ user } exact />
+        <PrivateRoute path="/content/:subMenu" component={ Content } user={ user } exact />
+        <PrivateRoute path="/content/:subMenu/:genreID" component={ Content } user={ user } exact />
       </Switch>
     </>
   );

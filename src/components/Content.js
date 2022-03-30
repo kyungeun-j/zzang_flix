@@ -1,82 +1,139 @@
-import React, { Fragment, useEffect, useState } from "react";
-import axios from "axios";
-import styled, { css } from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import ContentListItem from './ContentListItem';
-import { useDispatch } from "react-redux";
 import { contentList, genreList } from '../_actions/contentAction';
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from 'react-icons/md';
 import TopContent from "./TopContent";
+import ContentDetailModal from "./ContentDetailModal";
 
 const ContentList = styled.div`
   color: white;
-  margin-top: calc(1152 / 2048 * 77%);
+  padding-top: calc(1152 / 2048 * 77%);
+  overflow: hidden;
 `;
-const GenreContainer = styled.div`    
-  margin: 3vw 4vw;
-  position: relative;
-  // overflow: hidden;
-
+const GenreContainer = styled.div`
   &:hover {
     .slideIcon:nth-child(2) {
-      left: -4vw;
+      left: 0;
       display: ${props => props.genreTypeProps < 0 ? 'block' : 'none'};
     }
-  
+
     .slideIcon:nth-child(3) {
-      right: calc(-4vw + 1px);
+      right: 0;
       display: ${props => props.slideVisibleProps === undefined || props.slideVisibleProps === 1 ? 'block' : 'none'};
     }
   }
 
-  h3 {
-    font-size: 1.3rem;
-    margin-bottom: 9px;
-  }
-
   .slideIcon {
     display: none;
-    width: 2.5vw;
-    height: 10vw;
+    padding: 0 0.5vw;
+    width: 3vw;
+    height: ${props => props.imgWidth / 126 * 71}px;
     position: absolute;
-    z-index: 1;
-    margin: 0 0.7vw;
+    z-index: 10;
+    background: #0000003d;
   }
 
-  svg:hover {
+  .slideIcon:hover {
     cursor: pointer;
-    transform: scale(1.5);
+    transform: scale(1.1);
+    z-index: 10;
+    background: #00000094;
   }
+
+  h3 {
+    font-size: 1.3rem;
+    margin-left: 4vw;
+  }
+
+  @media (max-width: 900px) {
+    .slideIcon {
+      height: ${props => props.imgWidth * .5 / 126 * 71}px;
+    }
+  }
+`;
+const GenreContentContainer = styled.div`    
+  margin: 0 4vw 3vw;
+  position: relative;
 `;
 const GenreList = styled.div`
   display: flex;
+  width: calc(100vw - 8.8vw);
+`;
+const ContentList2 = styled.div`
+    color: white;
+    margin: calc(1152 / 2048 * 80%) 3.5vw 3vw;
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
 `;
 
-function Content() {
+function Content({ match }) {
+
   const [contents, setContents] = useState([]);
   const [genre, setGenre] = useState([]);
+  const [genreID, setGenreID] = useState(match.params.genreID);
   const [moveWidth, setMoveWidth] = useState({});
   const [slideVisible, setSlideVisible] = useState({});
   const [randomContent, setRandomContent] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState();
+
+  const [imgWidth, setImgWidth] = useState(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 225)))
+  const [imgCount, setImgCount] = useState(Math.round((window.innerWidth - window.innerWidth * 0.08) / 225));
+
+  // modal
+  const modalHandler = (openVal, content) => {
+    setModalVisible(openVal);
+    setModalContent(content);
+  };
+
+  // width resize 
+  const resizeHandler = () => {
+    setImgWidth(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 225)))
+    setImgCount(Math.round((window.innerWidth - window.innerWidth * 0.08) / 225))
+  };
 
   useEffect(() => {
-    contentList().then(res => {
+    window.addEventListener('resize', resizeHandler);
+      return () => { window.removeEventListener('resize', resizeHandler) };
+  }, []);
+
+  // genre select
+  useEffect(() => {
+    setGenreID(match.params.genreID);
+  }, [match]);
+
+  useEffect(() => {
+    contentList({ genreID: genreID }).then(res => {
       setContents(res)
       setRandomContent(res[Math.floor(Math.random() * res.length)])
     });
     genreList().then(res => setGenre(res));
-  }, []);
+  }, [genreID]);
   
+
+  //
+  useEffect(() => {
+    console.log(imgCount)
+    Object.values(genre).map(gItem => {
+      slideVisible[gItem['genreType']] = imgCount >= 6 ? 0 : 1
+    })
+  }, [imgCount, genre]);
+
+  console.log(slideVisible)
   const preSlideHandler = (e) => {
     const genre = e.target.tagName === 'path' ?
                     e.currentTarget.parentElement.children[0].innerText : e.target.parentElement.children[0].innerText;
     const target = e.target.tagName === 'path' ?
-                    e.currentTarget.parentElement.children[3] : e.target.parentElement.children[3]; // GenreListEle
-    
-    const nowImgCount = Math.floor(target.offsetWidth / (target.children[0].offsetWidth + 6));
+                    e.currentTarget.parentElement.children[3].children[0] : e.target.parentElement.children[3].children[0];
+    const nowImgCount = Math.floor((window.innerWidth - (3 * window.innerWidth / 100)) / (target.children[0].offsetWidth + 6));
     const preWidth = nowImgCount * (target.children[0].offsetWidth + 6);
-    const translateX = moveWidth[genre] + preWidth;
-
+    const translateX = moveWidth[genre] + preWidth > 0 ? 0 : moveWidth[genre] + preWidth;
     target.style.transform = 'translateX('+translateX+'px)';
+    
     setMoveWidth({
       ...moveWidth,
       [genre]: translateX
@@ -88,9 +145,11 @@ function Content() {
         [genre]: 1
       })
     }
-  }
+  };
 
   const nextSlideHandler = (e) => {
+    console.log(e.target)
+    console.log(e.currentTarget)
     const genre = e.target.tagName === 'path' ?
                     e.currentTarget.parentElement.children[0].innerText : e.target.parentElement.children[0].innerText;
 
@@ -106,50 +165,68 @@ function Content() {
     })
 
     const target = e.target.tagName === 'path' ?
-                    e.currentTarget.parentElement.children[3] : e.target.parentElement.children[3]; // GenreListEle
-    const nowImgCount = Math.floor(target.offsetWidth / (target.children[0].offsetWidth + 6));
+                    e.currentTarget.parentElement.children[3].children[0] : e.target.parentElement.children[3].children[0]; // GenreListEle
+    const nowImgCount = Math.floor((window.innerWidth - (3 * window.innerWidth / 100)) / (target.children[0].offsetWidth + 6));
     const translateX = moveWidth[genre] !== undefined ? moveWidth[genre] + (nowImgCount * (target.children[0].offsetWidth + 6) * -1) : nowImgCount * (target.children[0].offsetWidth + 6) * -1;
-    console.log(target)
     target.style.transform = 'translateX('+translateX+'px)';
+
     setMoveWidth({
       ...moveWidth,
       [genre]: translateX
     });
-
-    if ((((target.children[0].offsetWidth + 6)*6) + translateX) <= (target.children[0].offsetWidth + 6) * nowImgCount ) {
+    
+    
       setSlideVisible({
         ...slideVisible,
-        [genre]: 0
+        [genre]: (6 - nowImgCount < nowImgCount) ? 0 : 1
       })
-    }
-  }
+    
+  };
 
   return (
     <>
     {
-      randomContent !== undefined ?
-      <TopContent randomContent={ randomContent } /> : <></>
+      // detail modal
+      modalVisible && <ContentDetailModal modalVisible={ modalVisible } modalHandler={ modalHandler } content={ modalContent } />
     }
-    
-    <ContentList>
-      {
-        genre.map(g => (
-          <GenreContainer key={ g.genreID } genreTypeProps={moveWidth[g.genreType]} slideVisibleProps={slideVisible[g.genreType]} >
-            <h3>{ g.genreType }</h3>
-            <MdOutlineArrowBackIos className="slideIcon" onClick={ preSlideHandler } />
-            <MdOutlineArrowForwardIos className="slideIcon" onClick={ nextSlideHandler } />
-
-            <GenreList>
-            {
-              contents.filter(c => c.genreID === g.genreID).map(cg => (
-                <ContentListItem key={ cg.id } content={ cg } />
+    {
+      // top content
+      randomContent !== undefined ? <TopContent randomContent={ randomContent } modalHandler={ modalHandler }  /> : <></>
+    }
+    {
+      // content items
+      Object.values(match.params).length === 0 ?
+      // 기본
+      <ContentList>
+        {
+          genre.map(g => (
+            <GenreContainer key={ g.genreID } genreTypeProps={ moveWidth[g.genreType] } slideVisibleProps={ slideVisible[g.genreType] } imgWidth={imgWidth}>
+              <h3>{ g.genreType }</h3>
+              {/* content pre/next btn */}
+              <MdOutlineArrowBackIos className="slideIcon" onClick={ preSlideHandler } />
+              <MdOutlineArrowForwardIos className="slideIcon" onClick={ nextSlideHandler } />
+              <GenreContentContainer >
+                <GenreList>
+                {
+                  contents.filter(c => c.genreID === g.genreID).map(cg => (
+                    <ContentListItem key={ cg.id } content={ cg } moveWidth={ moveWidth[genre[cg.genreID]['genreType']] } modalHandler={ modalHandler } imgWidth={ imgWidth } />
+                  ))
+                }
+                </GenreList>
+              </GenreContentContainer>
+            </GenreContainer>
+          ))
+        }
+      </ContentList> :
+      // 장르별
+      <ContentList2>
+          {
+              contents.map(content => (
+                  <ContentListItem key={ content.id } content={ content } modalHandler={ modalHandler } imgWidth={ imgWidth } />
               ))
-            }
-            </GenreList>
-          </GenreContainer>
-        ))
-      }
-    </ContentList>
+          }
+      </ContentList2>
+    }
     </>
   );
 }

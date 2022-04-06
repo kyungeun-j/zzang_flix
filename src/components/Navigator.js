@@ -45,6 +45,8 @@ const Nav = styled.nav`
         position: relative;
         margin-right: 13px;
         cursor: pointer;
+        display: flex;
+        justify-content: end;
     }
     .login_outBtn div {
         justify-content: end;
@@ -67,6 +69,19 @@ const Nav = styled.nav`
                 font-weight: bold;
                 font-size: 20px;
             `
+        }
+    }
+    .login_outBtn:hover {
+        .listIcon {
+            animation: login_outIcon .3s forwards;
+        }
+    }
+    @keyframes login_outIcon {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(180deg);
         }
     }
 `;
@@ -165,13 +180,14 @@ function Navigator({ location, user }) {
         <Nav style={
             location === '/' ? {padding: '11px 39px'} : 
             location === '/login' ? {padding: '3px 23px', background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0))'} :
-            location === '/regform' ? {padding: '2px 20px', borderBottom: '1px solid #e6e6e6' } :
+            location === '/regform'  ? {padding: '2px 20px', borderBottom: '1px solid #e6e6e6' } :
+            location === '/account' || location === '/password' ? {padding: '3px 29px', background: 'black' } :
             {padding: '11px 27px', background: scrollY === 0 ? 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0))' : 'black'}
         }>
             <div className='logo_navBtns'>
                 <Link to={ user.isLogin ? '/content' : '/' }>
                     <img src={ logo } alt='logo' style={
-                        location === '/' ? {width: '10.5rem'} : 
+                        location === '/' || location === '/account' || location === '/password' ? {width: '10.5rem'} : 
                         location === '/login' ? {width: '13rem'} :
                         location === '/regform' ? {width: '13.5rem'} :
                         {width: '7.5rem'}
@@ -192,16 +208,16 @@ function Navigator({ location, user }) {
                     user.isLogin ?
                     <>
                         <UserEmail>
-                            {user.userEmail}
+                            { user.userEmail }
                             <AiFillCaretDown className='listIcon' />
                         </UserEmail>
                         <UserBtnList>
-                            <li>계정</li>
+                            <li onClick={ () => history.push({ pathname: '/account' }) }>계정</li>
                             <li onClick={ onLogout }>짱플릭스에서 로그아웃</li>
                         </UserBtnList>
                     </>
                     :
-                    <Link to={'/login'}>로그인</Link>
+                    <Link to='/login'>로그인</Link>
                     }
                 </div>
             }

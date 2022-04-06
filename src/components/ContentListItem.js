@@ -90,7 +90,7 @@ function ContentListItem({ content, modalHandler, imgWidth }) {
         if (parentEleLeft == 0) {
             setHoverCenter(0);
         } else if (parentEleLeft > targetWidth * (visibleImgCount - 1)) {
-            setHoverCenter(-53);
+            setHoverCenter(-50);
         } else {
             setHoverCenter(-25);
         }

@@ -6,7 +6,7 @@ const HomeSection = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 100vh;
 `;
 const HomeContainer = styled.div`
     width: 666px;

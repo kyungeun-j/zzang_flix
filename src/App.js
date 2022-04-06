@@ -14,6 +14,8 @@ import Cookies from 'universal-cookie';
 import { loginCheck } from '../src/_actions/userAction';
 import PrivateRoute from './components/route_control/PrivateRoute';
 import PublicRoute from './components/route_control/PublicRoute';
+import Account from './components/Account';
+import UpdateUserPassword from './components/UpdateUserPassword';
 
 const GlobalStyle = createGlobalStyle`
 html {
@@ -39,7 +41,12 @@ body {
       ||
       location =='/regform' &&
         css `
-        background: white;
+        background: #f3f3f3;
+        `
+      ||
+      location =='/account' || location =='/password' &&
+        css `
+        background: #f3f3f3;
         `
       ||
         css`
@@ -58,7 +65,7 @@ body {
   // login check
   useEffect(() => {
       dispatch(loginCheck({ token: cookies.get('token') }))
-  }, [])
+  }, []);
 
   return (
     <>
@@ -75,6 +82,8 @@ body {
         <PrivateRoute path="/content" component={ Content } user={ user } exact />
         <PrivateRoute path="/content/:subMenu" component={ Content } user={ user } exact />
         <PrivateRoute path="/content/:subMenu/:genreID" component={ Content } user={ user } exact />
+        <PrivateRoute path="/account" component={ Account } user={ user } exact />
+        <PrivateRoute path="/password" component={ UpdateUserPassword } user={ user } exact />
       </Switch>
     </>
   );

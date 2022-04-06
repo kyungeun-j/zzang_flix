@@ -10,6 +10,7 @@ const RegFormSection = styled.section`
     justify-content: center;
     align-items: center;
     width: 100vw;
+    height: 100vh;
 `;
 const RegFormContainer = styled.div`
     margin: 3.5rem 1rem 1rem;
@@ -126,6 +127,13 @@ function RegisterForm() {
         } 
     };
 
+    const onTabKeyHandler = (e) => {
+        if (e.key === "Tab") {
+            e.preventDefault();
+            setPwSelect(true);
+        }
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         if (email === '' || email.indexOf('@') < 0 || email.indexOf('.', email.indexOf('@')) < 0) 
@@ -177,7 +185,7 @@ function RegisterForm() {
                         <p>몇 단계만 더 거치면 넷플릭스 가입 완료!</p>
                         <p> 복잡한 단계는 모두 없앴습니다.</p>
                     </div>
-                    <RegFormInputSection onClick={ onRegisterHandler }>
+                    <RegFormInputSection onClick={ onRegisterHandler } onKeyDown={ onTabKeyHandler }>
                         <RegFormInputDiv select={ emailSelect }>
                             <RegFormLabel>이메일 주소</RegFormLabel>
                             <RegFormInput type="text" value={ email } onChange={ emailHandler } ref={el => (inputRef.current[0] = el)} />

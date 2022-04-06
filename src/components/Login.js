@@ -139,6 +139,14 @@ function Login() {
     useEffect(() => {
         if (pwSelect) inputRef.current[1].focus();
     }, [pwSelect]);
+    useEffect(() => {
+        window.addEventListener('keydown', (e) => {
+            if (e.key === "Tab") {
+                e.preventDefault();
+                !emailSelect ? setEmailSelect(true) : setPwSelect(true);
+            }               
+        });
+    }, [emailSelect, pwSelect]);
 
     const emailHandler = (e) => {
         setEmail(e.currentTarget.value);

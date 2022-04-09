@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/zzang_flix/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/zzang_flix/static/js/main.ea23d438.chunk.js",
-    "main.js.map": "/zzang_flix/static/js/main.ea23d438.chunk.js.map",
+    "main.js": "/zzang_flix/static/js/main.bbc71eb2.chunk.js",
+    "main.js.map": "/zzang_flix/static/js/main.bbc71eb2.chunk.js.map",
     "runtime-main.js": "/zzang_flix/static/js/runtime-main.f2f00705.js",
     "runtime-main.js.map": "/zzang_flix/static/js/runtime-main.f2f00705.js.map",
     "static/js/2.f55f1c51.chunk.js": "/zzang_flix/static/js/2.f55f1c51.chunk.js",
@@ -20,6 +20,6 @@
     "static/js/runtime-main.f2f00705.js",
     "static/js/2.f55f1c51.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.ea23d438.chunk.js"
+    "static/js/main.bbc71eb2.chunk.js"
   ]
 }

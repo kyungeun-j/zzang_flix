@@ -34,9 +34,14 @@ export async function logoutUser(token) {
     };
 }
 
-// 이메일 중복확인
+// 이메일 확인
 export async function compareEmail(email) {
-    return await axios.post(USER_URL+'/compare_email', email).then(res => res.data.compareResult);
+    return await axios.post(USER_URL+'/compare_email', email).then(res => res.data);
+}
+
+// 비밀번호 변경
+export async function updatePassword(password, email) {
+    return await axios.post(USER_URL+'/update_password', password, email).then(res => res.data);
 }
 
 // 회원가입

@@ -87,7 +87,7 @@ function Register() {
         else 
         {
             compareEmail({email}).then(res => {
-                if (res) 
+                if (res.compareResult) 
                 {
                     history.push({
                         pathname: '/login',

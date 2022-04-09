@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { BsCheckCircleFill } from "react-icons/bs";
 
 const AccountSection = styled.section`
     display: flex;
@@ -51,12 +52,36 @@ const UserInfoContainer = styled.div`
         text-decoration: none;
     }
 `;
+const UserUpdateInfo = styled.div`
+    height: 3.5rem;
+    margin-bottom: 0.5rem;
+    background: #5ea53f;
+    color: white;
+    display: flex;
+    align-items: center;
+
+    svg {
+        font-size: 1.5rem;
+        margin: 0 1.5rem;
+    }
+`;
 
 function Account({ user }) {
+    const location = useLocation();
+    
     return(
         <AccountSection>
             <AccountContainer>
-                <h1>계정</h1> <hr />
+                <h1>계정</h1> 
+                { location.state !== undefined && 
+                    <UserUpdateInfo>
+                        <BsCheckCircleFill />
+                        <div>
+                            비밀번호가 변경되었습니다.
+                        </div>
+                    </UserUpdateInfo>
+                }
+                <hr />
                 <UserInfoContainer>
                     <div className='updateInfoLabel'>정보</div>
                     <div className='updateInfoContainer'>
@@ -65,7 +90,6 @@ function Account({ user }) {
                             <span>비밀번호: ******</span>
                             <Link to='/password'>비밀번호 변경</Link>
                         </div>
-                        
                     </div>
                 </UserInfoContainer>
             </AccountContainer>

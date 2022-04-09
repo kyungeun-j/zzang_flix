@@ -37,13 +37,24 @@ app.get('/api/content/genreList', (req, res) => {
 });
 
 // user
-// user email 중복 확인
+// user email 확인
 app.post('/api/user/compare_email', (req, res) => {
   db.query("SELECT * FROM user where email = ?", [[req.body.email]], (err, data) => {
     if (data.length > 0) {
-      res.send({ compareResult: true });
+      res.send({ compareResult: true, userPW: data[0].password });
     } else {
       res.send({ compareResult: false });
+    }
+  });
+});
+
+// password 변경
+app.post('/api/user/update_password', (req, res) => {
+  db.query("UPDATE user SET password = ? WHERE email = ?", [req.body.password, req.body.email], (err, data) => {
+    if (data.changedRows === 1) {
+      res.send({ updateResult: true });
+    } else {
+      res.send({ updateResult: false });
     }
   });
 });
@@ -53,7 +64,6 @@ app.post('/api/user/register', (req, res) => {
   const user = [Object.values(req.body).map(body => body)];
 
   db.query("INSERT INTO user VALUES ?", [user] , (err) => {
-    console.log(err)
     if (err === null) res.send(true);
     else res.send(false);
   }) 
@@ -66,13 +76,10 @@ app.post('/api/user/login', (req, res) => {
   // email & password 확인
   db.query("SELECT * FROM user WHERE email = ?", email, (err, data) => {
     if (!err) {
-      console.log(data)
-      console.log(data.length)
       if (data.length < 1) {
         res.send({ result: false, msg: 'email fail' })
       } else {
         db.query("SELECT * FROM user WHERE email = ? AND password = ?", [email, password], (err, data) => {
-          console.log(data)
           if (data.length < 1) {
             res.send({ result: false, msg: 'password fail' })
           } else {

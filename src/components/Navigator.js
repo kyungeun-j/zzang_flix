@@ -46,10 +46,10 @@ const Nav = styled.nav`
         margin-right: 13px;
         cursor: pointer;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
     }
     .login_outBtn div {
-        justify-content: end;
+        justify-content: flex-end;
     }
     .login_outBtn a, button {
         padding: 9px 17px;

@@ -8,8 +8,12 @@ const ModalWrapper = styled.div`
     align-items: center;
     position: fixed;
     inset: 0;
+    top: 0;
+    left: 0;
     background-color: rgb(0 0 0 / 50%);
     z-index: 10;
+    width: 100%;
+    height: 100%;
 `;
 const ModalOverlay = styled.div`
     display: ${(props) => (props.visible ? 'flex' : 'none')};
@@ -17,8 +21,12 @@ const ModalOverlay = styled.div`
     align-items: center;
     position: fixed;
     inset: 0;
+    top: 0;
+    left: 0;
     background-color: rgb(0 0 0 / 50%);
     z-index: 10;
+    width: 100%;
+    height: 100%;
 `;
 const ModalInner = styled.div`
     position: absolute;

@@ -75,19 +75,21 @@ const BgInfo = styled.section`
 
 function TopContent({ randomContent, modalHandler }) {
     return (
+    <>
         <TopContentContainer>
             <BgImg style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0) 73%, rgba(0, 0, 0, 1)), linear-gradient(to left, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.45)), url('+randomContent.bgImgDeskTop+')'}}></BgImg>
-            <BgInfo>
-                <img src={ randomContent.logoImg } />
-                <p className='contentInfo'>{ randomContent.info }</p>
-                <p className='infoBtn'>
-                    <AiOutlineInfoCircle className='icon' />
-                    <span onClick={ () => { modalHandler(true, randomContent)} }>상세 정보</span>
-
-                    <span className='contentAge'>{ randomContent.age }</span>
-                </p>
-            </BgInfo>
         </TopContentContainer>
+        <BgInfo>
+            <img src={ randomContent.logoImg } />
+            <p className='contentInfo'>{ randomContent.info }</p>
+            <p className='infoBtn'>
+                <AiOutlineInfoCircle className='icon' />
+                <span onClick={ () => { modalHandler(true, randomContent)} }>상세 정보</span>
+
+                <span className='contentAge'>{ randomContent.age }</span>
+            </p>
+        </BgInfo>
+    </>
     );
 }
 

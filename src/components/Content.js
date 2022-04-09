@@ -108,7 +108,6 @@ function Content({ match }) {
   }, [genreID]);
   
   useEffect(() => {
-    console.log(imgCount)
     Object.values(genre).map(gItem => {
       slideVisible[gItem['genreType']] = imgCount >= 6 ? 0 : 1
     })
@@ -138,8 +137,6 @@ function Content({ match }) {
   };
 
   const nextSlideHandler = (e) => {
-    console.log(e.target)
-    console.log(e.currentTarget)
     const genre = e.target.tagName === 'path' ?
                     e.currentTarget.parentElement.children[0].innerText : e.target.parentElement.children[0].innerText;
 

@@ -74,7 +74,7 @@ const ContentDiv = styled.div`
 
     &:hover {
         ${ContentInfo} {
-            display: flex;
+            display: ${props => props.hoverFlex};
         }
     }
 `;
@@ -82,6 +82,7 @@ const ContentDiv = styled.div`
 function ContentListItem({ content, modalHandler, imgWidth }) {
     const { bgImgDeskTop, img, title, age, duration, id } = content;
     const [hoverCenter, setHoverCenter] = useState(0);
+    const [hoverFlex, setSectionFlex] = useState('');
     
     const mouseOver = (e) => {
         const parentEleLeft = e.currentTarget.getBoundingClientRect().left - e.currentTarget.parentElement.children[0].getBoundingClientRect().left;
@@ -94,19 +95,20 @@ function ContentListItem({ content, modalHandler, imgWidth }) {
         } else {
             setHoverCenter(-25);
         }
+        setSectionFlex('flex')
     }
 
     return (
-        <ContentDiv onMouseOver={ mouseOver } imgWidth={imgWidth}>
+        <ContentDiv onMouseOver={ mouseOver } imgWidth={ imgWidth } hoverFlex={ hoverFlex }>
             <ContentImg src={ img } alt={ title } /> 
             <ContentInfo hoverLeft={ hoverCenter }>
                     <img src={ bgImgDeskTop } />
                     <section>
                         <div>
                             <span>{ title }</span>
-                            <span onClick={ (e) => { 
+                            <span onClick={ () => { 
                                     modalHandler(true, content);
-                                    e.currentTarget.parentElement.parentElement.parentElement.style.display = 'none';
+                                    setSectionFlex('')
                             }}>
                                 <FaChevronDown />
                             </span>

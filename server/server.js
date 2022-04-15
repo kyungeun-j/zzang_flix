@@ -3,6 +3,7 @@ const app  = express();
 const PORT = process.env.PORT || 4000;
 const db = require('./config/db');
 const cors = require('cors');
+const path = require('path');
 var cookieParser = require('cookie-parser');
 
 // jwt

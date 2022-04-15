@@ -103,7 +103,7 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "cd server && node index.js",
     "dev:client": "npm start",
-    "heroku-postbuild": "npm install && npm run build"
+    "heroku-postbuild": "npm run dev"
   },
   "eslintConfig": {
     "extends": [

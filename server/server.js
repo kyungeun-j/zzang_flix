@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.listen(PORT)
 // content
 // content 리스트
 app.post('/api/content/contentList', (req, res) => {

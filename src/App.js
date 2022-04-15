@@ -11,7 +11,7 @@ import mainbackground from '../src/static/images/mainBackground.jpeg';
 import { createGlobalStyle, css } from 'styled-components';
 import Navigator from './components/Navigator';
 import Cookies from 'universal-cookie';
-import { loginCheck } from '../src/_actions/userAction';
+import { loginCheck } from './_actions/userAction';
 import PrivateRoute from './components/route_control/PrivateRoute';
 import PublicRoute from './components/route_control/PublicRoute';
 import Account from './components/Account';
@@ -28,23 +28,23 @@ html {
 body {
   ${({ location }) => 
     ( 
-      location == '/' &&
+      location === '/' &&
         css `
         background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.3) ,rgba(0,0,0,0.9)),url(${mainbackground}) no-repeat left 67% / cover;
         height: 100vh;
         `
       ||
-      location =='/login' &&
+      location === '/login' &&
         css `
         background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url(${loginbackground}) no-repeat left top / 139rem;
         `
       ||
-      location =='/regform' &&
+      location === '/regform' &&
         css `
         background: #f3f3f3;
         `
       ||
-      location =='/account' || location =='/password' &&
+      location === '/account' || location === '/password' &&
         css `
         background: #f3f3f3;
         `
@@ -64,7 +64,7 @@ body {
 
   // login check
   useEffect(() => {
-      dispatch(loginCheck({ token: cookies.get('token') }))
+      dispatch(loginCheck({ token: cookies.get('token') }));
   }, []);
 
   return (

@@ -3,6 +3,7 @@ const app  = express();
 const PORT = process.env.PORT || 4000;
 const db = require('./config/db');
 const cors = require('cors');
+var cookieParser = require('cookie-parser');
 
 // jwt
 const bodyParser = require('body-parser');
@@ -13,6 +14,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // content
 // content 리스트
@@ -93,7 +95,10 @@ app.post('/api/user/login', (req, res) => {
                 expiresIn: '1h',
               }
             );
-            res.send({ result: true, userEmail: email, token: accessToken });
+            res.cookie('token', accessToken, {
+              maxAge: 3600000
+            })
+            res.send({ result: true, userEmail: email });
           }
         })
       }
@@ -113,7 +118,11 @@ app.post('/api/user/logout', (req, res) => {
 // login check
 app.post('/api/user/loginCheck', (req, res) => {
   jwt.verify(req.body.token, SECRET_KEY, (error, decoded) => {
-    if(error) res.send(false);
+    if(error || req.cookies.token === undefined)
+    {
+      res.clearCookie('token');
+      res.send(false);
+    }
     else res.send(decoded.email);
   });
 })

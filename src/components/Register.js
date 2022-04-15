@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { compareEmail } from '../_actions/userAction';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Cookies from 'universal-cookie';
 import { registerUser, loginUser } from '../_actions/userAction';

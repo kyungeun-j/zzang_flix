@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useHistory } from 'react-router';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../_actions/userAction';
@@ -184,7 +184,12 @@ function Login() {
             dispatch(loginUser({ email, password})).then(res => {
                 if (res.payload.result) 
                 {
-                    cookies.set('token', res.payload.token);
+                    // var date = new Date();
+                    // date.setMinutes(date.getMinutes() + 1);
+                    // cookies.set('token', res.payload.token, {
+                    //     path: '/',
+                    //     expires: date.toUTCString()
+                    // });
                     history.push({
                         pathname: '/content'
                     });

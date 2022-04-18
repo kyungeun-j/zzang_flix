@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.listen(PORT)
+
 // content
 // content 리스트
 app.post('/api/content/contentList', (req, res) => {
@@ -130,12 +130,19 @@ app.post('/api/user/loginCheck', (req, res) => {
 })
 
 // 리액트 정적 파일 제공
-app.use(express.static(path.join(__dirname, '/build')));
+// app.use(express.static(path.join(__dirname, '/build')));
 
-// 라우트 설정
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/build/index.html'));
-});
-// app.listen(PORT, () => {
-//     console.log(`Server On : http://localhost:${PORT}/`)
-// })
+// // 라우트 설정
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname+'/build/index.html'));
+// });
+app.listen(PORT, () => {
+    console.log(`Server On : http://localhost:${PORT}/`)
+})
+
+// app.use(express.static(path.join(__dirname, 'build')));
+
+// // app.get('/', function(req, res) {
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+// });

@@ -1,5 +1,4 @@
 {
-  "homepage": ".",
   "name": "zzang_flix",
   "version": "0.1.0",
   "private": true,
@@ -101,7 +100,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "cd server && node index.js",
+    "dev:server": "cd server && node server.js",
     "dev:client": "npm start",
     "heroku-postbuild": "npm install && npm run build"
   },
@@ -184,7 +183,7 @@
     "node": "16.7.0",
     "npm": "7.20.3"
   },
-  "proxy": "https://zzang-flix.herokuapp.com/",
+  "proxy": "http://localhost:4000",
   "devDependencies": {
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

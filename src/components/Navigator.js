@@ -178,19 +178,19 @@ function Navigator({ location, user }) {
     
     return (
         <Nav style={
-            location === '/' ? {padding: '11px 39px'} : 
-            location === '/login' ? {padding: '3px 23px', background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0))'} :
-            location === '/regform'  ? {padding: '2px 20px', borderBottom: '1px solid #e6e6e6' } :
-            location === '/account' || location === '/password' ? {padding: '3px 29px', background: 'black' } :
-            {padding: '11px 27px', background: scrollY === 0 ? 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0))' : 'black'}
+            location === '/' ? {padding: '22px 51px'} : 
+            location === '/login' ? {padding: '18px 40px', background: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0))'} :
+            location === '/regform'  ? {padding: '19px 39px', borderBottom: '1px solid #e6e6e6' } :
+            location === '/account' || location === '/password' ? {padding: '12px 40px', background: 'black' } :
+            {padding: '18px 54px', background: scrollY === 0 ? 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0))' : 'black'}
         }>
             <div className='logo_navBtns'>
                 <Link to={ user.isLogin ? '/content' : '/' }>
                     <img src={ logo } alt='logo' style={
-                        location === '/' || location === '/account' || location === '/password' ? {width: '10.5rem'} : 
-                        location === '/login' ? {width: '13rem'} :
-                        location === '/regform' ? {width: '13.5rem'} :
-                        {width: '7.5rem'}
+                        location === '/' || location === '/account' || location === '/password' ? {width: '11.5rem'} : 
+                        location === '/login' ? {width: '15rem'} :
+                        location === '/regform' ? {width: '14.5rem'} :
+                        {width: '8.8rem'}
                     } />
                 </Link>
                 { 

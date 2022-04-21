@@ -101,8 +101,7 @@
     "deploy": "gh-pages -d build",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "cd server && node server.js",
-    "dev:client": "npm start",
-    "heroku-postbuild": "npm install && npm run build"
+    "dev:client": "npm start"
   },
   "eslintConfig": {
     "extends": [
@@ -178,10 +177,6 @@
     "presets": [
       "react-app"
     ]
-  },
-  "engine": {
-    "node": "16.7.0",
-    "npm": "7.20.3"
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {

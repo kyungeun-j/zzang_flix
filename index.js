@@ -6,6 +6,13 @@ const cors = require('cors');
 const path = require('path');
 var cookieParser = require('cookie-parser');
 
+app.listen(PORT);
+
+// app.use(express.static(path.join(__dirname, 'client/build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// })
+
 // jwt
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
@@ -128,21 +135,3 @@ app.post('/api/user/loginCheck', (req, res) => {
     else res.send(decoded.email);
   });
 })
-
-// 리액트 정적 파일 제공
-// app.use(express.static(path.join(__dirname, '/build')));
-
-// // 라우트 설정
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/build/index.html'));
-// });
-app.listen(PORT, () => {
-    console.log(`Server On : http://localhost:${PORT}/`)
-})
-
-// app.use(express.static(path.join(__dirname, 'build')));
-
-// // app.get('/', function(req, res) {
-// app.get('*', function(req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });

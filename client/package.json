@@ -98,10 +98,7 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "cd server && node server.js",
-    "dev:client": "npm start"
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

@@ -63,9 +63,9 @@ body {
   let user = useSelector(state => state.user);
 
   // login check
-  // useEffect(() => {
-  //     dispatch(loginCheck({ token: cookies.get('token') }));
-  // }, []);
+  useEffect(() => {
+      dispatch(loginCheck({ token: cookies.get('token') }));
+  }, []);
 
   // console.log(cookies.get('token'))
   // console.log(!!cookies.get('token'))

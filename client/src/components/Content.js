@@ -65,9 +65,9 @@ function Content({ match }) {
 const dispatch = useDispatch();
   
   const content = useSelector(state => state.content);
-  
+  console.log(content)
   const [genre, setGenre] = useState([]);
-  console.log(genre)
+  // console.log(genre)
   const [genreID, setGenreID] = useState(match.params.genreID);
   const [moveWidth, setMoveWidth] = useState({});
   const [slideVisible, setSlideVisible] = useState({});
@@ -105,11 +105,12 @@ const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(contentList({ genreID: match.params.genreID }));
-    genreList().then(res => setGenre(res));
+    dispatch(genreList());
+    // genreList().then(res => setGenre(res));
   }, [genreID]);
   
   useEffect(() => {
-    Object.values(genre).map(gItem => {
+    Object.values(content['genre']).map(gItem => {
       slideVisible[gItem['genreType']] = imgCount >= 6 ? 0 : 1
     })
   }, [imgCount, genre]);
@@ -180,7 +181,7 @@ const dispatch = useDispatch();
       // 기본
       <ContentList>
         {
-          genre.length > 0 && genre.map(g => (
+          content['genre'].map(g => (
             <GenreContainer key={ g.genreID } genreTypeProps={ moveWidth[g.genreType] } slideVisibleProps={ slideVisible[g.genreType] } imgWidth={imgWidth}>
               <h3>{ g.genreType }</h3>
               {/* content pre/next btn */}
@@ -190,7 +191,7 @@ const dispatch = useDispatch();
                 <GenreList>
                 {
                   content['content'].filter(c => c.genreID === g.genreID).map(cg => (
-                    <ContentListItem key={ cg.id } content={ cg } moveWidth={ moveWidth[genre[cg.genreID]['genreType']] } modalHandler={ modalHandler } imgWidth={ imgWidth } />
+                    <ContentListItem key={ cg.id } content={ cg } moveWidth={ moveWidth[content['genre'][cg.genreID]['genreType']] } modalHandler={ modalHandler } imgWidth={ imgWidth } />
                   ))
                 }
                 </GenreList>

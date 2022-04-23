@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Cookies from 'universal-cookie';
@@ -138,7 +138,7 @@ function Navigator({ location, user }) {
     // for content genre select
     const [genreID, setGenreID] = useState();
     const [genreType, setGenreType] = useState();
-    const [genreOptions, setGenreOptions] = useState([]);
+    const genreOptions = useSelector(state => state.content.genre);
 
     useState(() => {
         window.addEventListener('scroll', () => {
@@ -157,7 +157,7 @@ function Navigator({ location, user }) {
     };
 
     useEffect(() => {
-        genreList().then(res => setGenreOptions(res));
+        dispatch(genreList())
     }, []);
 
     useEffect(() => {

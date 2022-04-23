@@ -1,6 +1,6 @@
 // import axios from 'axios';
 import { axiosInstance } from "../config";
-import { CONTENT_LIST } from "./types";
+import { CONTENT_LIST, GENRE_LIST } from "./types";
 
 const CONTENT_URL = '/content';
 
@@ -16,5 +16,10 @@ export async function contentList(genreID) {
 
 // genre 리스트
 export async function genreList() {
-    return await axiosInstance.get(CONTENT_URL+'/genreList').then(res => res.data);
+    const result = await axiosInstance.get(CONTENT_URL+'/genreList').then(res => res.data);
+
+    return {
+        type: GENRE_LIST,
+        payload: result
+    }
 }

@@ -104,8 +104,8 @@ const dispatch = useDispatch();
   }, [match]);
 
   useEffect(() => {
-    dispatch(contentList({ genreID: match.params.genreID }));
-    dispatch(genreList());
+    dispatch(contentList({ genreID: match.params.genreID }), genreList());
+    // dispatch(genreList());
     // genreList().then(res => setGenre(res));
   }, [genreID]);
   

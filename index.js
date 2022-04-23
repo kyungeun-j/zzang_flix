@@ -9,10 +9,10 @@ var cookieParser = require('cookie-parser');
 app.listen(PORT);
 console.log(PORT)
 
-app.use(express.static(path.join(__dirname, '/client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
-})
+// app.use(express.static(path.join(__dirname, '/client/build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
+// })
 
 // jwt
 const bodyParser = require('body-parser');
@@ -105,10 +105,7 @@ app.post('/api/user/login', (req, res) => {
                 expiresIn: '1h',
               }
             );
-            res.cookie('token', accessToken, {
-              maxAge: 3600000
-            })
-            res.send({ result: true, userEmail: email });
+            res.send({ result: true, userEmail: email, token: accessToken });
           }
         })
       }
@@ -127,10 +124,10 @@ app.post('/api/user/logout', (req, res) => {
 
 // login check
 app.post('/api/user/loginCheck', (req, res) => {
+  console.log(req.body.token)
   jwt.verify(req.body.token, SECRET_KEY, (error, decoded) => {
-    if(error || req.cookies.token === undefined)
+    if(error || req.body.token === undefined)
     {
-      res.clearCookie('token');
       res.send(false);
     }
     else res.send(decoded.email);

@@ -184,12 +184,10 @@ function Login() {
             dispatch(loginUser({ email, password})).then(res => {
                 if (res.payload.result) 
                 {
-                    // var date = new Date();
-                    // date.setMinutes(date.getMinutes() + 1);
-                    // cookies.set('token', res.payload.token, {
-                    //     path: '/',
-                    //     expires: date.toUTCString()
-                    // });
+                    cookies.set('token', res.payload.token, {
+                        path: '/',
+                        maxAge: 3600000
+                    });
                     history.push({
                         pathname: '/content'
                     });

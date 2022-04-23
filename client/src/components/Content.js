@@ -66,7 +66,6 @@ const dispatch = useDispatch();
   
   const content = useSelector(state => state.content);
   console.log(content)
-  const [genre, setGenre] = useState([]);
   // console.log(genre)
   const [genreID, setGenreID] = useState(match.params.genreID);
   const [moveWidth, setMoveWidth] = useState({});
@@ -113,7 +112,7 @@ const dispatch = useDispatch();
     Object.values(content['genre']).map(gItem => {
       slideVisible[gItem['genreType']] = imgCount >= 6 ? 0 : 1
     })
-  }, [imgCount, genre]);
+  }, [imgCount, content['genre']]);
 
   const preSlideHandler = (e) => {
     const genre = e.target.tagName === 'path' ?

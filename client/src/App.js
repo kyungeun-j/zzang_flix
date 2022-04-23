@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, Switch } from 'react-router-dom';
+import { useLocation, Switch, useHistory } from 'react-router-dom';
 import Home from './components/Home';
 import Content from './components/Content';
 import Login from './components/Login';
@@ -58,17 +58,24 @@ body {
 
   function App() {
   const location = useLocation();
+  const history = useHistory();
   const cookies = new Cookies();
   const dispatch = useDispatch();
   let user = useSelector(state => state.user);
 
   // login check
   useEffect(() => {
-      dispatch(loginCheck({ token: cookies.get('token') }));
+    console.log(cookies.get('token'))
+      dispatch(loginCheck({ token: cookies.get('token') })).then(res => {
+        if (res.payload === false) 
+        {
+          history.push({
+            pathname: '/login'
+        });
+        }
+      });
   }, []);
 
-  // console.log(cookies.get('token'))
-  // console.log(!!cookies.get('token'))
   console.log(user)
   return (
     <>

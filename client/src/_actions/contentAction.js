@@ -1,11 +1,17 @@
 // import axios from 'axios';
 import { axiosInstance } from "../config";
+import { CONTENT_LIST } from "./types";
 
 const CONTENT_URL = '/content';
 
 // content 리스트
 export async function contentList(genreID) {
-    return await axiosInstance.post(CONTENT_URL+'/contentList', genreID).then(res => res.data);
+    const result = await axiosInstance.post(CONTENT_URL+'/contentList', genreID).then(res => res.data);
+
+    return {
+        type: CONTENT_LIST,
+        payload: result
+    }
 }
 
 // genre 리스트

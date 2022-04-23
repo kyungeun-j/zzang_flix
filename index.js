@@ -7,6 +7,7 @@ const path = require('path');
 var cookieParser = require('cookie-parser');
 
 app.listen(PORT);
+console.log(PORT)
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.get('*', (req, res) => {

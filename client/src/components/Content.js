@@ -5,6 +5,7 @@ import { contentList, genreList } from '../_actions/contentAction';
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos } from 'react-icons/md';
 import TopContent from "./TopContent";
 import ContentDetailModal from "./ContentDetailModal";
+import { useDispatch, useSelector } from "react-redux";
 
 const ContentList = styled.div`
   color: white;
@@ -61,12 +62,15 @@ const ContentList2 = styled.div`
 `;
 
 function Content({ match }) {
-  const [contents, setContents] = useState([]);
+const dispatch = useDispatch();
+  
+  const content = useSelector(state => state.content);
+  
   const [genre, setGenre] = useState([]);
+  console.log(genre)
   const [genreID, setGenreID] = useState(match.params.genreID);
   const [moveWidth, setMoveWidth] = useState({});
   const [slideVisible, setSlideVisible] = useState({});
-  const [randomContent, setRandomContent] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContent, setModalContent] = useState();
   const [imgWidth, setImgWidth] = useState(Math.floor((window.innerWidth - window.innerWidth * 0.1) / Math.round((window.innerWidth - window.innerWidth * 0.08) / 225)))
@@ -100,10 +104,7 @@ function Content({ match }) {
   }, [match]);
 
   useEffect(() => {
-    contentList({ genreID: genreID }).then(res => {
-      setContents(res)
-      setRandomContent(res[Math.floor(Math.random() * res.length)])
-    });
+    dispatch(contentList({ genreID: match.params.genreID }));
     genreList().then(res => setGenre(res));
   }, [genreID]);
   
@@ -162,7 +163,7 @@ function Content({ match }) {
         [genre]: (6 - nowImgCount < nowImgCount) ? 0 : 1
       }); 
   };
-
+  
   return (
     <>
     {
@@ -171,7 +172,7 @@ function Content({ match }) {
     }
     {
       // top content
-      randomContent !== undefined ? <TopContent randomContent={ randomContent } modalHandler={ modalHandler }  /> : <></>
+      content['randomContent'] !== undefined ? <TopContent randomContent={ content['randomContent'] } modalHandler={ modalHandler }  /> : <></>
     }
     {
       // content items
@@ -179,7 +180,7 @@ function Content({ match }) {
       // 기본
       <ContentList>
         {
-          genre.map(g => (
+          genre.length > 0 && genre.map(g => (
             <GenreContainer key={ g.genreID } genreTypeProps={ moveWidth[g.genreType] } slideVisibleProps={ slideVisible[g.genreType] } imgWidth={imgWidth}>
               <h3>{ g.genreType }</h3>
               {/* content pre/next btn */}
@@ -188,7 +189,7 @@ function Content({ match }) {
               <GenreContentContainer >
                 <GenreList>
                 {
-                  contents.filter(c => c.genreID === g.genreID).map(cg => (
+                  content['content'].filter(c => c.genreID === g.genreID).map(cg => (
                     <ContentListItem key={ cg.id } content={ cg } moveWidth={ moveWidth[genre[cg.genreID]['genreType']] } modalHandler={ modalHandler } imgWidth={ imgWidth } />
                   ))
                 }
@@ -201,7 +202,7 @@ function Content({ match }) {
       // 장르별
       <ContentList2>
       {
-        contents.map(content => (
+        content['content'].map(content => (
             <ContentListItem key={ content.id } content={ content } modalHandler={ modalHandler } imgWidth={ imgWidth } />
         ))
       }

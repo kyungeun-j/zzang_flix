@@ -65,15 +65,7 @@ body {
 
   // login check
   useEffect(() => {
-    console.log(cookies.get('token'))
-      dispatch(loginCheck({ token: cookies.get('token') })).then(res => {
-        if (res.payload === false) 
-        {
-          history.push({
-            pathname: '/login'
-        });
-        }
-      });
+      dispatch(loginCheck({ token: cookies.get('token') }));
   }, []);
 
   console.log(user)

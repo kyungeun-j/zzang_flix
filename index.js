@@ -7,12 +7,11 @@ const path = require('path');
 var cookieParser = require('cookie-parser');
 
 app.listen(PORT);
-console.log(PORT)
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
-})
+});
 
 // jwt
 const bodyParser = require('body-parser');
@@ -37,7 +36,7 @@ app.post('/api/content/contentList', (req, res) => {
   db.query(query, (err, data) => {
     if(!err) res.send(data);
     else res.send(err);
-  })
+  });
 });
 
 // genre 리스트
@@ -52,9 +51,12 @@ app.post('/api/content/genreList', (req, res) => {
 // user email 확인
 app.post('/api/user/compare_email', (req, res) => {
   db.query("SELECT * FROM user where email = ?", [[req.body.email]], (err, data) => {
-    if (data.length > 0) {
+    if (data.length > 0) 
+    {
       res.send({ compareResult: true, userPW: data[0].password });
-    } else {
+    } 
+    else 
+    {
       res.send({ compareResult: false });
     }
   });
@@ -63,9 +65,12 @@ app.post('/api/user/compare_email', (req, res) => {
 // password 변경
 app.post('/api/user/update_password', (req, res) => {
   db.query("UPDATE user SET password = ? WHERE email = ?", [req.body.password, req.body.email], (err, data) => {
-    if (data.changedRows === 1) {
+    if (data.changedRows === 1) 
+    {
       res.send({ updateResult: true });
-    } else {
+    } 
+    else 
+    {
       res.send({ updateResult: false });
     }
   });
@@ -78,8 +83,8 @@ app.post('/api/user/register', (req, res) => {
   db.query("INSERT INTO user VALUES ?", [user] , (err) => {
     if (err === null) res.send(true);
     else res.send(false);
-  }) 
-})
+  });
+});
 
 // login
 app.post('/api/user/login', (req, res) => {
@@ -87,14 +92,21 @@ app.post('/api/user/login', (req, res) => {
 
   // email & password 확인
   db.query("SELECT * FROM user WHERE email = ?", email, (err, data) => {
-    if (!err) {
-      if (data.length < 1) {
+    if (!err) 
+    {
+      if (data.length < 1) 
+      {
         res.send({ result: false, msg: 'email fail' })
-      } else {
+      } 
+      else 
+      {
         db.query("SELECT * FROM user WHERE email = ? AND password = ?", [email, password], (err, data) => {
-          if (data.length < 1) {
-            res.send({ result: false, msg: 'password fail' })
-          } else {
+          if (data.length < 1) 
+          {
+            res.send({ result: false, msg: 'password fail' });
+          } 
+          else 
+          {
             // jwt 토큰 생성, pw는 보안때문에 넣지 않는 것이 좋음, 유효기간 1시간(임시)
             const accessToken = jwt.sign(
               {
@@ -107,10 +119,10 @@ app.post('/api/user/login', (req, res) => {
             );
             res.send({ result: true, userEmail: email, token: accessToken });
           }
-        })
+        });
       }
     }
-  })
+  });
 })
 
 // logout
@@ -124,7 +136,6 @@ app.post('/api/user/logout', (req, res) => {
 
 // login check
 app.post('/api/user/loginCheck', (req, res) => {
-  console.log(req.body.token)
   jwt.verify(req.body.token, SECRET_KEY, (error, decoded) => {
     if(error || req.body.token === undefined)
     {

@@ -65,8 +65,6 @@ function Content({ match }) {
 const dispatch = useDispatch();
   
   const content = useSelector(state => state.content);
-  console.log(content)
-  // console.log(genre)
   const [genreID, setGenreID] = useState(match.params.genreID);
   const [moveWidth, setMoveWidth] = useState({});
   const [slideVisible, setSlideVisible] = useState({});

@@ -66,10 +66,8 @@ body {
   // login check
   useEffect(() => {
       dispatch(loginCheck({ token: cookies.get('token') }));
-      console.log(cookies.get('token'))
   }, []);
-
-  console.log(user)
+  
   return (
     <>
       <GlobalStyle location={ location.pathname } />

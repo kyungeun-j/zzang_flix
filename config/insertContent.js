@@ -6,18 +6,18 @@ fs.readFile('../mv.json', 'utf8', (error, jsonFile) => {
     if (error) return console.log(error);
     
     const jsonData = JSON.parse(jsonFile);
-    const values = []
+    const values = [];
     Object.keys(jsonData).forEach(genre => {
         Object.keys(jsonData[genre]).forEach(list => {
-            const valueDetail = []
-            valueDetail.push(list)
+            const valueDetail = [];
+            valueDetail.push(list);
             Object.keys(jsonData[genre][list]).forEach(detail => {
-            valueDetail.push(jsonData[genre][list][detail])
-        })
-        valueDetail.push(genre)
-        values.push(valueDetail)
-        })
-    })
+                valueDetail.push(jsonData[genre][list][detail]);
+            });
+        valueDetail.push(genre);
+        values.push(valueDetail);
+        });
+    });
 
     const sql = 'INSERT INTO content VALUES ?';
     

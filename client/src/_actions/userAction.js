@@ -7,7 +7,6 @@ const USER_URL = '/user';
 // 로그인 여부 체크
 // payload = 로그인 X -> false, 로그인 O -> email
 export async function loginCheck(token) {
-    console.log(token)
     const result = await axiosInstance.post(USER_URL+'/loginCheck', token).then(res => res.data);
 
     return {

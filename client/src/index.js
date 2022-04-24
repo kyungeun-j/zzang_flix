@@ -8,36 +8,20 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import promiseMiddlerware from 'redux-promise';
-import reducer from './_reducers/index';
-import persistStore from 'redux-persist/es/persistStore';
-import { PersistGate } from 'redux-persist/integration/react';
-import persistReducer from 'redux-persist/es/persistReducer';
-import storage from 'redux-persist/lib/storage';
+import rootReducer from './_reducers/index';
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  timeout : null
-}
-
-const persisted = persistReducer(persistConfig, reducer);
-
-const store = createStore(persisted, compose(
+const store = createStore(rootReducer, compose(
   applyMiddleware(promiseMiddlerware,reduxThunk),
   window.navigator.userAgent.includes('Chrome') ?
   window.__REDUX_DEVTOOLS_EXTENSION__ && 
   window.__REDUX_DEVTOOLS_EXTENSION__() : compose
 ));
 
-const persistor = persistStore(store);
-
 ReactDOM.render(
   <Provider store={ store }>
-    <PersistGate persistor={ persistor }>
       <BrowserRouter>
           <App />
       </BrowserRouter>
-    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );

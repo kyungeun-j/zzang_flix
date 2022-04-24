@@ -104,6 +104,7 @@ const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(contentList({ genreID: match.params.genreID }));
+    dispatch(genreList());
   }, [genreID]);
   
   useEffect(() => {

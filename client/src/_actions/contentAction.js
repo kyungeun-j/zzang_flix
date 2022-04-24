@@ -16,7 +16,7 @@ export async function contentList(genreID) {
 
 // genre 리스트
 export async function genreList() {
-    const result = await axiosInstance.get(CONTENT_URL+'/genreList').then(res => res.data);
+    const result = await axiosInstance.post(CONTENT_URL+'/genreList').then(res => res.data);
     
     return {
         type: GENRE_LIST,

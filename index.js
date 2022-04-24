@@ -9,10 +9,10 @@ var cookieParser = require('cookie-parser');
 app.listen(PORT);
 console.log(PORT)
 
-app.use(express.static(path.join(__dirname, '/client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
-})
+// app.use(express.static(path.join(__dirname, '/client/build')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '/client/build/', 'index.html'));
+// })
 
 // jwt
 const bodyParser = require('body-parser');
@@ -41,7 +41,7 @@ app.post('/api/content/contentList', (req, res) => {
 });
 
 // genre 리스트
-app.get('/api/content/genreList', (req, res) => {
+app.post('/api/content/genreList', (req, res) => {
   db.query("SELECT * FROM genre", (err, data) => {
     if(!err) res.send(data);
     else res.send(err);
